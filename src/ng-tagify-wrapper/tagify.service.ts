@@ -12,8 +12,6 @@ export class TagifyService {
   constructor() {}
 
   /** @description Singleton used by TagifyComponent to a ref to tagify
-   * @param {ElementRef} tagifyInputRef
-   * @param {SettingsModel} settings
    * @returns tagify instance
    */
   getTagifyRef(tagifyInputRef: ElementRef, settings: SettingsModel) {
@@ -32,7 +30,6 @@ export class TagifyService {
 
   /**
    * @description add multiple tags
-   * @param tags
    */
   public addTags(tags) {
     this.tagify.addTags(tags);
