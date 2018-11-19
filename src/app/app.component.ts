@@ -1,10 +1,30 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {TagifyService} from '../ng-tagify-wrapper/tagify.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'ngTagify';
+export class AppComponent implements OnDestroy {
+
+  constructor(private tagifyService: TagifyService) {}
+  public settings = { blacklist: ['fucking', 'shit']};
+
+  onAdd(tagify) {
+    console.log('added a tag', tagify);
+  }
+
+  onRemove(tags) {
+    console.log('removed a tag', tags);
+  }
+  clearTags() {
+    this.tagifyService.removeAll();
+  }
+  addTags() {
+    this.tagifyService.addTags(['this', 'is', 'cool']);
+  }
+  ngOnDestroy() {
+    this.tagifyService.destroy();
+  }
 }
