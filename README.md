@@ -4,31 +4,83 @@ An Angular module wrapper for https://github.com/yairEO/tagify
 
 you can install it by running following from lib folder:
 
-`npm i ng-tagify-0.0.0.tgz`
+`npm i ngTagify-1.0.0.tgz`
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.3.
 
-## Development server
+## How To Use
+Install ngTagify which is located under /lib folder (ngTagify-1.0.0.tgz).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Import ngTagify from your consumer module.
 
-## Code scaffolding
+```
+import {TagifyModule} from 'ngTagify';
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+...
 
-## Build
+  imports: [
+    TagifyModule.forRoot()
+  ],
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+...
+```
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+You will get the **TagifyComponent** which will be used by your template as `<tagify>`
 
-## Running end-to-end tests
+Example:
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```
+<div>
+  testing tagify wrapper
+  <tagify [settings]="settings"
+          (add)="onAdd($event)"
+          (remove)="onRemove($event)">
+  </tagify>
+  <button (click)="clearTags()">clear</button>
+  <button (click)="addTags()">add Tags</button>
+</div>
+```
 
-## Further help
+And the **TagifyService**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+(The tagifyService is a singletone injected by angular, do not create a new instance of it)
+
+```typescript
+import {Component, OnDestroy} from '@angular/core';
+import {TagifyService} from 'ngTagify';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnDestroy {
+
+  constructor(private tagifyService: TagifyService) {}
+  public settings = { blacklist: ['fucking', 'shit']};
+
+  onAdd(tagify) {
+    console.log('added a tag', tagify);
+  }
+
+  onRemove(tags) {
+    console.log('removed a tag', tags);
+  }
+  clearTags() {
+    this.tagifyService.removeAll();
+  }
+  addTags() {
+    this.tagifyService.addTags(['this', 'is', 'cool']);
+  }
+  ngOnDestroy() {
+    this.tagifyService.destroy();
+  }
+}
+```
+
+## Build instructions
+- run `npm i` in order to install all required dependencies.
+- run `npm run packagr` in order to tell ng-packager to bundle the ng-tagify-wrapper module
+- from the generated /dist run `npm pack` to pack it as an npm ready package
