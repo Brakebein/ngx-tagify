@@ -25,20 +25,20 @@ export class TagifyService {
    * @description removes all tags
    */
   public removeAll() {
-    this.tagify.removeAllTags();
+    return this.tagify.removeAllTags();
   }
 
   /**
    * @description add multiple tags
    */
   public addTags(tags) {
-    this.tagify.addTags(tags);
+    return this.tagify.addTags(tags);
   }
 
   /**
    * @description destroy dom and everything
    */
   public destroy() {
-    this.tagify.destroy();
+    return this.tagify.destroy();
   }
 }
