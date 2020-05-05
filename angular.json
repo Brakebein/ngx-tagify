@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngTagify": {
+    "ngx-tagify": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,11 +13,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngTagify",
+            "outputPath": "dist/ngx-tagify",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -51,18 +52,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngTagify:build"
+            "browserTarget": "ngx-tagify:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngTagify:build:production"
+              "browserTarget": "ngx-tagify:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngTagify:build"
+            "browserTarget": "ngx-tagify:build"
           }
         },
         "test": {
@@ -70,7 +71,7 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
               "src/styles.css",
@@ -97,7 +98,7 @@
         }
       }
     },
-    "ngTagify-e2e": {
+    "ngx-tagify-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -105,11 +106,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ngTagify:serve"
+            "devServerTarget": "ngx-tagify:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ngTagify:serve:production"
+              "devServerTarget": "ngx-tagify:serve:production"
             }
           }
         },
