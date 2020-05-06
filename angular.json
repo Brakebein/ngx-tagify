@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-tagify": {
+    "ngx-tagify-app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-tagify",
+            "outputPath": "dist/ngx-tagify-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -25,7 +25,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/@yaireo/tagify/dist/tagify.css"
+              "dist/ngx-tagify/styles/tagify.scss"
             ],
             "scripts": []
           },
@@ -52,18 +52,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-tagify:build"
+            "browserTarget": "ngx-tagify-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-tagify:build:production"
+              "browserTarget": "ngx-tagify-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-tagify:build"
+            "browserTarget": "ngx-tagify-app:build"
           }
         },
         "test": {
@@ -74,8 +74,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.css",
-              "node_modules/@yaireo/tagify/dist/tagify.css"
+              "src/styles.css"
             ],
             "scripts": [],
             "assets": [
@@ -98,7 +97,7 @@
         }
       }
     },
-    "ngx-tagify-e2e": {
+    "ngx-tagify-app-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -106,11 +105,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ngx-tagify:serve"
+            "devServerTarget": "ngx-tagify-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ngx-tagify:serve:production"
+              "devServerTarget": "ngx-tagify-app:serve:production"
             }
           }
         },
@@ -124,7 +123,47 @@
           }
         }
       }
+    },
+    "ngx-tagify": {
+      "projectType": "library",
+      "root": "projects/ngx-tagify",
+      "sourceRoot": "projects/ngx-tagify/src",
+      "prefix": "tagify",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-tagify/tsconfig.lib.json",
+            "project": "projects/ngx-tagify/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-tagify/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-tagify/src/test.ts",
+            "tsConfig": "projects/ngx-tagify/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-tagify/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-tagify/tsconfig.lib.json",
+              "projects/ngx-tagify/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "ngTagify"
+  "defaultProject": "ngx-tagify-app"
 }

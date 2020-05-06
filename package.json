@@ -1,5 +1,5 @@
 {
-  "name": "ngx-tagify",
+  "name": "ngx-tagify-module",
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,8 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "packagr": "ng-packagr -p ng-package.json"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -20,12 +19,14 @@
     "@angular/platform-browser": "~9.1.4",
     "@angular/platform-browser-dynamic": "~9.1.4",
     "@angular/router": "~9.1.4",
-    "@yaireo/tagify": "^2.7.6",
+    "@yaireo/tagify": "^3.8.0",
     "rxjs": "~6.5.4",
+    "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.4",
+    "@angular-devkit/build-ng-packagr": "~0.901.4",
     "@angular/cli": "~9.1.4",
     "@angular/compiler-cli": "^9.1.4",
     "@angular/language-service": "^9.1.4",

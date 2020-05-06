@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {TagifyModule} from '../ng-tagify-wrapper';
+import {TagifyModule} from 'ngx-tagify';
 
 @NgModule({
   declarations: [

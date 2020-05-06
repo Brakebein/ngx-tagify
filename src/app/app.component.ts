@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TagifyService} from '../ng-tagify-wrapper/tagify.service';
+import {Component, OnDestroy} from '@angular/core';
+import {TagifyService} from 'ngx-tagify';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent implements OnDestroy {
     console.log('removed a tag', tags);
   }
   clearTags() {
-    this.tagifyService.removeAll();
+    this.tagifyService.removeAllTags();
   }
   addTags() {
     this.tagifyService.addTags(['this', 'is', 'cool']);

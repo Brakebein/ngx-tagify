@@ -26,7 +26,6 @@
       true,
       "element",
       "app",
-      "tagify",
       "kebab-case"
     ],
     "eofline": true,
