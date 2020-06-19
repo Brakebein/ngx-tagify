@@ -84,3 +84,5 @@ export class AppComponent implements OnDestroy {
 - run `npm i` in order to install all required dependencies.
 - run `npm run packagr` in order to tell ng-packager to bundle the ng-tagify-wrapper module
 - from the generated /dist run `npm pack` to pack it as an npm ready package
+
+- `ng build ngx-tagify`

@@ -1,6 +1,6 @@
 {
   "name": "ngx-tagify",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "@yaireo/tagify": "^3.8.0"
   },

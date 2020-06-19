@@ -1,5 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
-import {TagifyService} from 'ngx-tagify';
+import {TagifyService, TagifySettings} from 'ngx-tagify';
+
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,9 @@ import {TagifyService} from 'ngx-tagify';
 })
 export class AppComponent implements OnDestroy {
 
-  constructor(private tagifyService: TagifyService) {}
-  public settings = { blacklist: ['fucking', 'shit']};
+  public settings: TagifySettings = { blacklist: ['fucking', 'shit']};
+
+  constructor(private tagifyService: TagifyService) { }
 
   onAdd(tagify) {
     console.log('added a tag', tagify);
@@ -19,12 +21,12 @@ export class AppComponent implements OnDestroy {
     console.log('removed a tag', tags);
   }
   clearTags() {
-    this.tagifyService.removeAllTags();
+    this.tagifyService.get('test').removeAllTags();
   }
   addTags() {
-    this.tagifyService.addTags(['this', 'is', 'cool']);
+    this.tagifyService.get('test').addTags(['this', 'is', 'cool']);
   }
   ngOnDestroy() {
-    this.tagifyService.destroy();
+    this.tagifyService.destroy('test');
   }
 }
