@@ -1,14 +1,10 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
 import {TagifyService} from './tagify.service';
-import {TagifySettings} from './tagify-settings';
+import {TagData, TagifySettings} from './tagify-settings';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import Tagify from '@yaireo/tagify';
 
-interface TagData {
-  value: string;
-  [key: string]: any;
-}
 
 @Component({
   selector: 'tagify',
@@ -70,7 +66,6 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
 
     // listen to tagify events
     this.tagify.on('input', e => {
-      console.log(e);
       this.tInput.emit(e.detail.value);
     });
 

@@ -1,3 +1,8 @@
+export interface TagData {
+  value: string;
+  [key: string]: any;
+}
+
 export interface TagifySettings {
   placeholder?: string;
   delimiters?: string|RegExp;
@@ -14,16 +19,16 @@ export interface TagifySettings {
   whitelist?: string[];
   blacklist?: string[];
   addTagOnBlur?: boolean;
-  callbacks?: { [key: string]: () => any };
+  callbacks?: { [key: string]: (...args: any[]) => void };
   maxTags?: number;
   editTags?: 2|1|false|null;
   templates?: {
-    wrapper?: (input: any, settings: TagifySettings) => string;
-    tag?: (value: string, tagData: any) => string;
+    wrapper?: (input: HTMLInputElement, settings: TagifySettings) => string;
+    tag?: (value: string, tagData: TagData) => string;
     dropdown?: (settings: TagifySettings) => string;
-    dropdownItem?: (item: any) => string;
+    dropdownItem?: (item: TagData) => string;
   };
-  transformTag?: (item: any) => any;
+  transformTag?: (tagData: TagData) => void;
   keepInvalidTags?: boolean;
   skipInvalid?: boolean;
   backspace?: boolean|'edit';

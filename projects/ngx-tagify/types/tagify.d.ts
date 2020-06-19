@@ -16,16 +16,16 @@ declare module '@yaireo/tagify' {
     whitelist?: string[];
     blacklist?: string[];
     addTagOnBlur?: boolean;
-    callbacks?: { [key: string]: () => any };
+    callbacks?: { [key: string]: (...args: any[]) => void };
     maxTags?: number;
     editTags?: 2 | 1 | false | null;
     templates?: {
-      wrapper?: (input: any, settings: TagifySettings) => string;
-      tag?: (value: string, tagData: any) => string;
+      wrapper?: (input: HTMLInputElement, settings: TagifySettings) => string;
+      tag?: (value: string, tagData: TagData) => string;
       dropdown?: (settings: TagifySettings) => string;
-      dropdownItem?: (item: any) => string;
+      dropdownItem?: (item: TagData) => string;
     };
-    transformTag?: (item: any) => any;
+    transformTag?: (tagData: TagData) => void;
     keepInvalidTags?: boolean;
     skipInvalid?: boolean;
     backspace?: boolean | 'edit';
@@ -78,7 +78,7 @@ declare module '@yaireo/tagify' {
      * @param clearInput - If true, the input's value gets cleared after adding tags
      * @param skipInvalid - If true, do not add, mark & remove invalid tags (defaults to Tagify settings)
      */
-    addTags(tags: string | string[] | TagData[], clearInput?: boolean, skipInvalid?: boolean): Node[];
+    addTags(tags: string | string[] | TagData[], clearInput?: boolean, skipInvalid?: boolean): Node|Node[];
 
     /**
      * Remove single/multiple tags. When nothing passed, removes last tag.
@@ -144,16 +144,36 @@ declare module '@yaireo/tagify' {
     /**
      * Add event listener
      */
-    on(event: 'add', cb: (e: CustomEvent) => void): this;
-    on(event: 'remove' | 'dblclick', cb: (e: CustomEvent<{ tag: Node, index: number, data: TagData }>) => void): this;
-    on(event: 'invalid', cb: (e: CustomEvent<{ tag: Node, data: TagData, message: boolean }>) => void): this;
-    on(event: 'input', cb: (e: CustomEvent<{ value: string, inputElm: HTMLInputElement }>) => void): this;
-    on(event: 'click', cb: (e: CustomEvent<{ tag: Node, index: number, data: TagData, originalEvent: MouseEvent }>) => void): this;
-    on(event: 'keydown' | 'edit:keydown', cb: (e: CustomEvent<{ originalEvent: KeyboardEvent }>) => void): this;
-    on(event: 'focus' | 'blur', cb: (e: CustomEvent<{ relatedTarget: Element }>) => void): this;
+    on(event: 'add' | 'remove' | 'dblclick' | 'edit:beforeUpdate' | 'edit:updated', cb: (e: CustomEvent<{
+      tagify: Tagify, tag: Node, index?: number, data?: TagData
+    }>) => void): this;
+    on(event: 'invalid', cb: (e: CustomEvent<{
+      tagify: Tagify, tag: Node, index?: number, data: TagData, message: boolean
+    }>) => void): this;
+    on(event: 'input', cb: (e: CustomEvent<{
+      tagify: Tagify, value: string, inputElm: any
+    }>) => void): this;
+    on(event: 'click', cb: (e: CustomEvent<{
+      tagify: Tagify, tag: Node, index: number, data: TagData, originalEvent: MouseEvent
+    }>) => void): this;
+    on(event: 'keydown' | 'edit:keydown', cb: (e: CustomEvent<{ tagify: Tagify, originalEvent: KeyboardEvent }>) => void): this;
+    on(event: 'focus' | 'blur', cb: (e: CustomEvent<{
+      tagify: Tagify, relatedTarget: Element
+    }>) => void): this;
+    on(event: 'edit:start', cb: (e: CustomEvent<{
+      tagify: Tagify, tag: Node, index: number, data: TagData, isValid: boolean
+    }>) => void): this;
     on(event: 'edit:input', cb: (e: CustomEvent<{
-      tag: Node, index: number, data: TagData & { newValue: string },
-      originalEvent: Event
+      tagify: Tagify, tag: Node, index: number, data: TagData & { newValue: string }, originalEvent: Event
+    }>) => void): this;
+    on(event: 'dropdown:show' | 'dropdown:hide' | 'dropdown:updated', cb: (e: CustomEvent<{
+      tagify: Tagify, dropdown: Element
+    }>) => void): this;
+    on(event: 'dropdown:scroll', cb: (e: CustomEvent<{
+      tagify: Tagify, percentage: number
+    }>) => void): this;
+    on(event: 'dropdown:select', cb: (e: CustomEvent<{
+      tagify: Tagify, value: string;
     }>) => void): this;
 
   }
