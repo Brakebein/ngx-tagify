@@ -11,6 +11,9 @@ export class TagifyService {
 
   constructor() { }
 
+  /**
+   * Initialize input element with tagify. Used internally.
+   */
   init(inputRef: HTMLInputElement, settings: TagifySettings): Tagify {
     if (arguments.length === 0) {
       return;
@@ -26,16 +29,19 @@ export class TagifyService {
     return tagify;
   }
 
-  get(id: string): Tagify {
-    return this.tagifyMap.get(id);
+  /**
+   * Get tagify instance for full access to tagify API.
+   */
+  get(name: string): Tagify {
+    return this.tagifyMap.get(name);
   }
 
   /**
-   * @description Destroy dom and everything
+   * Destroy dom and everything. Used internally.
    */
-  public destroy(id: string) {
-    this.tagifyMap.get(id).destroy();
-    this.tagifyMap.delete(id);
+  public destroy(name: string): void {
+    this.tagifyMap.get(name).destroy();
+    this.tagifyMap.delete(name);
   }
 
 }

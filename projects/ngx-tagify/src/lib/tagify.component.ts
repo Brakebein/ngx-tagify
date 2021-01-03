@@ -1,12 +1,19 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
-import {TagifyService} from './tagify.service';
-import {TagData, TagifySettings} from './tagify-settings';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { async } from 'rxjs/internal/scheduler/async';
 import Tagify from '@yaireo/tagify';
+import { TagifyService } from './tagify.service';
+import { TagData, TagifySettings } from './tagify-settings';
 
 
 @Component({
@@ -21,12 +28,12 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
   private value$ = new BehaviorSubject<TagData[]>(null);
   private tagify: Tagify;
 
-  @ViewChild('inputRef', {static: true}) inputRef: ElementRef;
+  @ViewChild('inputRef', {static: true}) inputRef: ElementRef<HTMLInputElement>;
 
   @Input() settings: TagifySettings = {};
   @Input() inputClass = '';
   @Input() name = '0';
-  @Input() suggestions: Observable<any>;
+  @Input() suggestions: Observable<string[]>;
   @Input()
   set value(v: TagData[]) {
     this.value$.next(v);
@@ -37,9 +44,11 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
   @Output() tInput = new EventEmitter<string>();
   @Output() valueChange = new EventEmitter<TagData[]>();
 
-  constructor(private tagifyService: TagifyService) { }
+  constructor(
+    private tagifyService: TagifyService
+  ) { }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.settings.callbacks = this.settings.callbacks || {};
 
     if (!this.settings.callbacks.hasOwnProperty('add')) {
@@ -63,6 +72,11 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
         tags.forEach(t => {
           if (!this.tagify.value.find(v => v.value === t.value)) {
             this.tagify.addTags([t]);
+          }
+        });
+        this.tagify.value.forEach(v => {
+          if (!tags.find(t => t.value === v.value)) {
+            this.tagify.removeTags(v.value);
           }
         });
       });
@@ -96,7 +110,7 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     this.tagifyService.destroy(this.name);
