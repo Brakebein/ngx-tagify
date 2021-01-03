@@ -3,6 +3,8 @@
 Proper Angular library that wraps [@yaireo/tagify](https://github.com/yairEO/tagify).
 It allows multiple instances of tagify and includes proper type declarations.
 
+Built with Angular version 9.1.4.
+
 ## Usage
 
 Install via npm:
@@ -86,7 +88,7 @@ export class AppComponent {
 |`name`|_Type:_ `string`<br>_Default value:_ `0`<br>Use different names if you want to use more than one tagify component.|
 |`settings`|_Type:_ `TagifySettings`<br>See [tagify/Settings](https://github.com/yairEO/tagify#settings).|
 |`inputClass`|_Type:_ `string`<br>Apply one or more CSS classes to the input field (e.g. Bootstrap's `form-control`).|
-|`suggestions`|_Type:_ `Observable<string[]>`<br>Execution of the observable updates the whitelist of the tagify. You can listen to user's inputs and update the whitelist respectively using this observable.| 
+|`suggestions`|_Type:_ `Observable<string[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.| 
 
 ### Outputs
 
@@ -94,7 +96,7 @@ export class AppComponent {
 |---|---|
 |`add`|Fires when a tag has been added.|
 |`remove`|Fires when a tag has been removed.|
-|`tInput`|Listen to the `input` event of the input element.|
+|`tInput`|Listen to the `input` event of the tagify input element.|
 
 Listen to all other events by defining respective callbacks ([tagify/Events](https://github.com/yairEO/tagify#events)).
 
@@ -132,11 +134,17 @@ export class AppComponent {
 
 ### Methods
 
-| <!-- --> | <!-- --> |
-|---|---|
-|`get(name: string): Tagify`|Gain full access to tagify API.|
-|`init(inputRef: HTMLInputElement, settings: TagifySettings): Tagify`|Used internally to initialize tagify when component is created.|
-|`destroy(name: string): void`|Used internally when component gets destroyed.|
+`get(name: string): Tagify`
+
+Gain full access to tagify API.
+
+`init(inputRef: HTMLInputElement, settings: TagifySettings): Tagify`
+
+Used internally to initialize tagify when component is created.
+
+`destroy(name: string): void`
+
+Used internally when component gets destroyed.
 
 
 ## Styling
@@ -147,12 +155,10 @@ __Option 1:__ Modify your `angular.json` by adding the `.scss` file to the `styl
 
 ```json
 "options": {
-  ...
   "styles": [
     "src/styles.scss",
     "node_modules/ngx-tagify/styles/tagify.scss"
-  ],
-  ...
+  ]
 }
 ```
 
@@ -165,10 +171,3 @@ __Option 2:__ If you want to override some of the styling, import it to a sass f
 .tagify
   --tags-border-color: #ff0000;
 ```
-
-## Build instructions
-- run `npm i` in order to install all required dependencies.
-- run `npm run packagr` in order to tell ng-packager to bundle the ng-tagify-wrapper module
-- from the generated /dist run `npm pack` to pack it as an npm ready package
-
-- `ng build ngx-tagify`
