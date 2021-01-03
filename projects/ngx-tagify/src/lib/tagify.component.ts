@@ -3,6 +3,9 @@ import {TagifyService} from './tagify.service';
 import {TagData, TagifySettings} from './tagify-settings';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { takeUntil, throttleTime } from 'rxjs/operators';
+import { async } from 'rxjs/internal/scheduler/async';
 import Tagify from '@yaireo/tagify';
 
 
@@ -69,13 +72,19 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
       this.tInput.emit(e.detail.value);
     });
 
-    this.tagify.on('add', () => {
-      this.valueChange.emit(this.tagify.value.slice());
-    });
-
-    this.tagify.on('remove', () => {
-      this.valueChange.emit(this.tagify.value.slice());
-    });
+    merge(
+      // @ts-ignore
+      fromEvent(this.tagify, 'add'),
+      // @ts-ignore
+      fromEvent(this.tagify, 'remove')
+    )
+      .pipe(
+        throttleTime(50, async, { leading: false, trailing: true }),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(() => {
+        this.valueChange.emit(this.tagify.value.slice());
+      });
 
     // listen to suggestions updates
     if (this.suggestions) {
