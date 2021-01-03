@@ -1,6 +1,21 @@
 {
   "name": "ngx-tagify",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "Angular library that wraps @yaireo/tagify",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brakebein/ngx-tagify.git"
+  },
+  "keywords": [
+    "angular",
+    "tagify"
+  ],
+  "author": "Brakebein",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Brakebein/ngx-tagify/issues"
+  },
+  "homepage": "https://github.com/Brakebein/ngx-tagify#readme",
   "dependencies": {
     "@yaireo/tagify": "^3.22.0"
   },
