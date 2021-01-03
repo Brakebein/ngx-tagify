@@ -19,7 +19,8 @@
     "@angular/platform-browser": "~9.1.4",
     "@angular/platform-browser-dynamic": "~9.1.4",
     "@angular/router": "~9.1.4",
-    "@yaireo/tagify": "^3.8.0",
+    "@yaireo/tagify": "^3.22.0",
+    "bootstrap": "^4.5.3",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
