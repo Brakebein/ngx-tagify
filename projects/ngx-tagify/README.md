@@ -1,7 +1,7 @@
 # ngx-tagify
 
 Proper Angular library that wraps [@yaireo/tagify](https://github.com/yairEO/tagify).
-It allows multiple instances of tagify and includes proper type declarations.
+It allows multiple instances of tagify, implements ControlValueAccessor (for use with `ngModel` and reactive forms), and includes proper type declarations.
 
 Built with Angular version 9.1.4.
 
@@ -14,10 +14,14 @@ Install via npm:
 Import module:
 
 ```typescript
-import { TagifyModule } from 'ngx-tagify';
+import { TagifyModule } from 'ngx-tagify'; 
 
 @NgModule({
-  imports: [TagifyModule.forRoot(),...]
+  imports: [
+    ...
+    TagifyModule.forRoot(),
+    ...
+  ]
 })
 export class AppModule() {}
 ```
@@ -26,11 +30,26 @@ Include styling (see [below](#styling)).
 
 ## Component
 
+You can use the `<tagify>` component either with `ngModel` or with reactive forms.
+Either way, it takes an array of `TagData`, i.e. an `Object` that contains a unique property `value`:
+
+```typescript
+interface TagData {
+  value: string;
+  [key: string]: any;
+}
+```
+
+### Usage with `ngModel`
+
+Import `FormsModule` to your module.
+
 ```html
-<tagify name="test"
-        [(value)]="tags"
+<tagify name="example1"
+        [(ngModel)]="tags"
+        inputClass="form-control"
         [settings]="settings"
-        [suggestions]="suggestion$"
+        [whitelist]="whitelist$"
         (add)="onAdd($event)"
         (remove)="onRemove($event)"
 </tagify>
@@ -38,8 +57,8 @@ Include styling (see [below](#styling)).
 
 ```typescript
 import { Component } from '@angular/core';
-import { TagifySettings } from 'ngx-tagify';
 import { BehaviorSubject } from 'rxjs';
+import { TagData, TagifySettings } from 'ngx-tagify';
 
 @Component({
   selector: 'app-root',
@@ -48,16 +67,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AppComponent {
     
-  private tagsData: {value: string}[] = [];
-  
-  get tags(): {value: string}[] {
-    return this.tagsData;
-  }
-  
-  set tags(v: {value: string}[]) {
-    this.tagsData = v;
-    // you can also react here to value changes
-  }
+  tags: TagData[] = [{ value: 'foo' }];
     
   settings: TagifySettings = {
     placeholder: 'Start typing...',
@@ -67,7 +77,7 @@ export class AppComponent {
     }
   };
   
-  suggestion$ = new BehaviorSubject<string[]>(['Hello', 'World']);
+  whitelist$ = new BehaviorSubject<string[]>(['hello', 'world']);
   
   onAdd(tagify) {
     console.log('added a tag', tagify);  
@@ -80,15 +90,54 @@ export class AppComponent {
 }
 ```
 
+__Note:__ The component only recognizes reference changes, it won't deep check for changes within the array.
+`this.tags.push({value: 'bar'});` won't do anything.
+Instead, use `this.tags = this.tags.concat([{value: 'bar'}]);` (or similar) to update changes.
+
+### Usage with Reactive Forms
+
+Import `ReactiveFormsModule` to your module.
+
+```html
+<form [formGroup]="form">
+  <tagify name="example2" formControlName="tags"></tagify>
+</form>
+```
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+  
+  form = new FormGroup({
+    tags: new FormControl([{ value: 'Reactive' }])
+  });
+    
+  ngOnInit(): void {
+      
+    this.form.valueChanges.subscribe(value => {
+      console.log('form value changed', value);
+    });
+      
+  }
+  
+}
+```
+
 ### Inputs
 
 | <!-- --> | <!-- --> |
 |---|---|
-|`value`|_Type:_ `{value: string, [key: string]: any}[]`<br>Tags array. Changes by tagify are reflected in this array.|
-|`name`|_Type:_ `string`<br>_Default value:_ `0`<br>Use different names if you want to use more than one tagify component.|
+|`name`|_Type:_ `string`<br>_Default value:_ `0`<br>Use different names if you want to use more than one tagify component on your page.|
 |`settings`|_Type:_ `TagifySettings`<br>See [tagify/Settings](https://github.com/yairEO/tagify#settings).|
 |`inputClass`|_Type:_ `string`<br>Apply one or more CSS classes to the input field (e.g. Bootstrap's `form-control`).|
-|`suggestions`|_Type:_ `Observable<string[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.| 
+|`whitelist`|_Type:_ `Observable<string[]\|TagData[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.| 
 
 ### Outputs
 
@@ -106,7 +155,7 @@ Listen to all other events by defining respective callbacks ([tagify/Events](htt
 You can also gain access to the full [tagify API](https://github.com/yairEO/tagify#methods) via a service.
 
 ```html
-<tagify name="test"</tagify>
+<tagify name="example3"</tagify>
 <button (click)="addTags()">Add tags</button>
 ```
 
@@ -126,26 +175,11 @@ export class AppComponent {
   ) {}
   
   addTags() {
-    this.tagifyService.get('test').addTags(['this', 'is', 'cool']);
+    this.tagifyService.get('example3').addTags(['this', 'is', 'cool']);
   }
   
 }
 ```
-
-### Methods
-
-`get(name: string): Tagify`
-
-Gain full access to tagify API.
-
-`init(inputRef: HTMLInputElement, settings: TagifySettings): Tagify`
-
-Used internally to initialize tagify when component is created.
-
-`destroy(name: string): void`
-
-Used internally when component gets destroyed.
-
 
 ## Styling
 
