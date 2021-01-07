@@ -3,8 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-// import { TagifyModule } from 'ngx-tagify';
-import { TagifyModule } from '../../projects/ngx-tagify/src/public-api';
+import { TagifyModule } from 'ngx-tagify';
 
 @NgModule({
   declarations: [

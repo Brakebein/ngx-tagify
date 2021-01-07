@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-// import { TagifyService, TagifySettings } from 'ngx-tagify';
-import { TagData, TagifyService, TagifySettings } from '../../projects/ngx-tagify/src/public-api';
+import { TagData, TagifyService, TagifySettings } from 'ngx-tagify';
 
 
 @Component({
