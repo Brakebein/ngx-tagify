@@ -24,7 +24,7 @@ export interface TagifySettings {
   editTags?: 2|1|false|null;
   templates?: {
     wrapper?: (input: HTMLInputElement, settings: TagifySettings) => string;
-    tag?: (value: string, tagData: TagData) => string;
+    tag?: (tagData: TagData) => string;
     dropdown?: (settings: TagifySettings) => string;
     dropdownItem?: (item: TagData) => string;
   };
