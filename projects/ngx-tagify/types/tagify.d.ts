@@ -13,7 +13,7 @@ declare module '@yaireo/tagify' {
       enabled?: boolean;
       rightKey?: boolean;
     };
-    whitelist?: string[];
+    whitelist?: string[]|TagData[];
     blacklist?: string[];
     addTagOnBlur?: boolean;
     callbacks?: { [key: string]: (...args: any[]) => void };

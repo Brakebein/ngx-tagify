@@ -2,12 +2,13 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, forwardRef,
   Input,
   OnDestroy,
   Output,
   ViewChild
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { async } from 'rxjs/internal/scheduler/async';
@@ -18,34 +19,53 @@ import { TagData, TagifySettings } from './tagify-settings';
 
 @Component({
   selector: 'tagify',
-  template: `<input [name]="name" [ngClass]="inputClass" #inputRef/>`,
-  styles: [
-  ]
+  template: `<input [name]="name" [ngClass]="inputClassValue" #inputRef/>`,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => TagifyComponent),
+    multi: true
+  }]
 })
-export class TagifyComponent implements AfterViewInit, OnDestroy {
+export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnDestroy {
+
+  private valueData: TagData[];
+  private onChange: any = Function.prototype;
+  private onTouched: any = Function.prototype;
 
   private unsubscribe$ = new Subject<void>();
   private value$ = new BehaviorSubject<TagData[]>(null);
   private tagify: Tagify;
 
+  inputClassValue = '';
+
   @ViewChild('inputRef', {static: true}) inputRef: ElementRef<HTMLInputElement>;
 
   @Input() settings: TagifySettings = {};
-  @Input() inputClass = '';
   @Input() name = '0';
-  @Input() suggestions: Observable<string[]>;
-  @Input()
+  @Input() suggestions: Observable<string[]|TagData[]>;
+  @Input() set inputClass(v: string) {
+    this.setTagsClass(v);
+    this.inputClassValue = v;
+  }
+
+  get value(): TagData[] {
+    return this.valueData;
+  }
+
   set value(v: TagData[]) {
-    this.value$.next(v);
+    if (v !== this.valueData) {
+      this.valueData = v;
+      this.onChange(v);
+    }
   }
 
   @Output() add = new EventEmitter();
   @Output() remove = new EventEmitter();
   @Output() tInput = new EventEmitter<string>();
-  @Output() valueChange = new EventEmitter<TagData[]>();
 
   constructor(
-    private tagifyService: TagifyService
+    private tagifyService: TagifyService,
+    private element: ElementRef<HTMLElement>
   ) { }
 
   ngAfterViewInit(): void {
@@ -69,11 +89,7 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(tags => {
         if (!tags) { return; }
-        tags.forEach(t => {
-          if (!this.tagify.value.find(v => v.value === t.value)) {
-            this.tagify.addTags([t]);
-          }
-        });
+        this.tagify.addTags(tags, false, true);
         this.tagify.value.forEach(v => {
           if (!tags.find(t => t.value === v.value)) {
             this.tagify.removeTags(v.value);
@@ -93,11 +109,12 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
       fromEvent(this.tagify, 'remove')
     )
       .pipe(
-        throttleTime(50, async, { leading: false, trailing: true }),
+        // throttle used to reduce number of value changes when adding/removing a bunch of tags
+        throttleTime(0, async, { leading: false, trailing: true }),
         takeUntil(this.unsubscribe$)
       )
       .subscribe(() => {
-        this.valueChange.emit(this.tagify.value.slice());
+        this.value = this.tagify.value.slice();
       });
 
     // listen to suggestions updates
@@ -107,6 +124,31 @@ export class TagifyComponent implements AfterViewInit, OnDestroy {
         .subscribe(list => {
           this.tagify.settings.whitelist = list;
         });
+    }
+  }
+
+  writeValue(tags: TagData[]) {
+    this.value$.next(tags);
+  }
+
+  registerOnChange(fn: any) {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any) {
+    this.onTouched = fn;
+  }
+
+  /**
+   * Tagify creates a `tags` element to which the classes of the `input` element are applied.
+   * Changes of `inputClass` are applied automatically to the `input` element, but have to be
+   * manually applied to the `tags` element.
+   */
+  private setTagsClass(v: string): void {
+    const tagsElement = this.element.nativeElement.querySelector('tags');
+    if (tagsElement) {
+      tagsElement.classList.remove(...this.inputClassValue.split(/\s+/));
+      tagsElement.classList.add(...v.split(/\s+/));
     }
   }
 

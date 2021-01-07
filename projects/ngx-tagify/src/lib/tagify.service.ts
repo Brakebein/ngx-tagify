@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import Tagify from '@yaireo/tagify';
-import {TagifySettings} from './tagify-settings';
+import { TagifySettings } from './tagify-settings';
 
 @Injectable({
   providedIn: 'root'

@@ -16,7 +16,7 @@ export interface TagifySettings {
     enabled?: boolean;
     rightKey?: boolean;
   };
-  whitelist?: string[];
+  whitelist?: string[]|TagData[];
   blacklist?: string[];
   addTagOnBlur?: boolean;
   callbacks?: { [key: string]: (...args: any[]) => void };
