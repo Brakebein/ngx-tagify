@@ -2,9 +2,9 @@
 <hr/>
 
 <h3>Simple tagify</h3>
+<p>using `[(ngModel)]`</p>
 <p>
-  <tagify [name]="'test2'"
-          [(value)]="values"
+  <tagify [(ngModel)]="tags"
           (add)="onAdd($event)"
           (remove)="onRemove($event)">
   </tagify>
@@ -12,17 +12,14 @@
 <p>
   <button (click)="replaceTags()" class="btn btn-secondary btn-sm">Replace tags</button>
 </p>
-<p class="text-monospace">{{ values | json }}</p>
+<p class="text-monospace">{{ tags | json }}</p>
 
 <hr/>
 
 <h3>Another tagify</h3>
-<p>
-  controlled by <code>TagifyService</code>, with Bootstrap <code>form-control</code> class, and suggestions (<code>Hello</code>, <code>World</code>)
-</p>
+<p>controlled by <code>TagifyService</code> and suggestions (<code>Hello</code>, <code>World</code>)</p>
 <p>
   <tagify name="test"
-          inputClass="form-control"
           [settings]="settings"
           [suggestions]="suggestion$"
           (add)="onAdd($event)"
@@ -33,3 +30,20 @@
   <button (click)="clearTags()" class="btn btn-secondary btn-sm mr-2">Clear</button>
   <button (click)="addTags()" class="btn btn-secondary btn-sm">Add tags</button>
 </p>
+
+<hr/>
+
+<h3>Reactive form</h3>
+<p>with Bootstrap <code>form-control</code> class and form validation</p>
+<form [formGroup]="form" class="was-validated mb-2">
+  <tagify formControlName="tags"
+          name="reactive"
+          [class.is-invalid]="form.invalid"
+          [inputClass]="'form-control' + (form.invalid ? ' is-invalid' : '')">
+  </tagify>
+  <div class="invalid-feedback">
+    Add at least 3 tags.
+  </div>
+</form>
+<p>Form is valid: <span class="text-monospace">{{ form.valid }}</span></p>
+<p class="text-monospace">{{ form.value | json }}</p>

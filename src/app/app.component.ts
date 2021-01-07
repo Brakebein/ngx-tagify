@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 // import { TagifyService, TagifySettings } from 'ngx-tagify';
-import { TagifyService, TagifySettings } from '../../projects/ngx-tagify/src/public-api';
+import { TagData, TagifyService, TagifySettings } from '../../projects/ngx-tagify/src/public-api';
 
 
 @Component({
@@ -9,26 +10,33 @@ import { TagifyService, TagifySettings } from '../../projects/ngx-tagify/src/pub
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  private valuesData: {value: string}[] = [{ value: 'Super' }];
+  form = new FormGroup({
+    tags: new FormControl([{ value: 'Reactive' }], Validators.minLength(3))
+  });
 
-  get values(): {value: string}[] {
-    return this.valuesData;
-  }
+  tags: TagData[] = [{ value: 'Super' }];
 
-  set values(v: {value: string}[]) {
-    this.valuesData = v;
-  }
-
-  public settings: TagifySettings = {
+  settings: TagifySettings = {
     placeholder: 'Start typing...',
     blacklist: ['fucking', 'shit']
   };
 
   suggestion$ = new BehaviorSubject<string[]>(['Hello', 'World']);
 
-  constructor(private tagifyService: TagifyService) { }
+  constructor(
+    private tagifyService: TagifyService
+  ) { }
+
+  ngOnInit() {
+
+    // listen to value changes of reactive form
+    this.form.valueChanges.subscribe(value => {
+      console.log('form value changed', value);
+    });
+
+  }
 
   onAdd(tagify) {
     console.log('added a tag', tagify);
@@ -38,20 +46,20 @@ export class AppComponent {
     console.log('removed a tag', tags);
   }
 
+  replaceTags() {
+    this.tags = [
+      {value: 'this'},
+      {value: 'is'},
+      {value: 'awesome'}
+    ];
+  }
+
   clearTags() {
     this.tagifyService.get('test').removeAllTags();
   }
 
   addTags() {
     this.tagifyService.get('test').addTags(['this', 'is', 'cool']);
-  }
-
-  replaceTags() {
-    this.values = [
-      {value: 'this'},
-      {value: 'is'},
-      {value: 'awesome'}
-    ];
   }
 
 }
