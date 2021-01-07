@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     blacklist: ['fucking', 'shit']
   };
 
-  suggestion$ = new BehaviorSubject<string[]>(['Hello', 'World']);
+  whitelist$ = new BehaviorSubject<string[]>(['Hello', 'World']);
 
   constructor(
     private tagifyService: TagifyService

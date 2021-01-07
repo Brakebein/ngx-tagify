@@ -2,7 +2,7 @@
 <hr/>
 
 <h3>Simple tagify</h3>
-<p>using `[(ngModel)]`</p>
+<p>using <code>[(ngModel)]</code></p>
 <p>
   <tagify [(ngModel)]="tags"
           (add)="onAdd($event)"
@@ -21,7 +21,7 @@
 <p>
   <tagify name="test"
           [settings]="settings"
-          [suggestions]="suggestion$"
+          [whitelist]="whitelist$"
           (add)="onAdd($event)"
           (remove)="onRemove($event)">
   </tagify>

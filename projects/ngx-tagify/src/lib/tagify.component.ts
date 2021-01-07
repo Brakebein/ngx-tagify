@@ -42,7 +42,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
   @Input() settings: TagifySettings = {};
   @Input() name = '0';
-  @Input() suggestions: Observable<string[]|TagData[]>;
+  @Input() whitelist: Observable<string[]|TagData[]>;
   @Input() set inputClass(v: string) {
     this.setTagsClass(v);
     this.inputClassValue = v;
@@ -118,8 +118,8 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       });
 
     // listen to suggestions updates
-    if (this.suggestions) {
-      this.suggestions
+    if (this.whitelist) {
+      this.whitelist
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(list => {
           this.tagify.settings.whitelist = list;
