@@ -3,6 +3,8 @@
 Proper Angular library that wraps [@yaireo/tagify](https://github.com/yairEO/tagify).
 It allows multiple instances of tagify, implements ControlValueAccessor (for use with `ngModel` and reactive forms), and includes proper type declarations.
 
+__[Demo](https://brakebein.github.io/ngx-tagify/)__
+
 Built with Angular version 9.1.4.
 
 ## Usage
