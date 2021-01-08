@@ -5,7 +5,7 @@ It allows multiple instances of tagify, implements ControlValueAccessor (for use
 
 __[Demo](https://brakebein.github.io/ngx-tagify/)__
 
-Built with Angular version 9.1.4.
+Built with Angular version 11.0.7.
 
 ## Usage
 
