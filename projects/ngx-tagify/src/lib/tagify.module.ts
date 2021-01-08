@@ -10,7 +10,7 @@ import { TagifyService } from './tagify.service';
   providers: [ TagifyService ]
 })
 export class TagifyModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<TagifyModule> {
     return {
       ngModule: TagifyModule,
       providers: [ TagifyService ]
