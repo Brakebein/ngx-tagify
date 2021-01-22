@@ -60,25 +60,55 @@ declare module '@yaireo/tagify' {
     settings: TagifySettings;
     value: TagData[];
 
+    DOM: {
+      dropdown: HTMLDivElement,
+      input: HTMLSpanElement,
+      originalInput: HTMLInputElement,
+      scope: HTMLElement
+    };
+
+    dropdown: {
+      /**
+       * Shows the suggestions select box.
+       * @param value - Filter the whitelist by this value (optional)
+       */
+      show(value?: string): void;
+      /**
+       * Hide the suggestions select box.
+       */
+      hide(force?: boolean): void;
+      /**
+       * Add all whitelist items as tags and close the suggestion dropdown.
+       */
+      selectAll(): void;
+    };
+
     constructor(inputElement: HTMLInputElement, settings: TagifySettings);
 
     /**
-     * Reverts the input element back as it was before Tagify was applied
+     * Reverts the input element back as it was before Tagify was applied.
      */
     destroy(): void;
 
     /**
-     * Removes all tags and resets the original input tag's value property
+     * Removes all tags and resets the original input tag's value property.
      */
     removeAllTags(): void;
 
     /**
-     * Parse and add tags
+     * Parse and add tags.
      * @param tags - Accepts a String (word, single or multiple with a delimiter), an Array of Objects or Strings
      * @param clearInput - If true, the input's value gets cleared after adding tags
      * @param skipInvalid - If true, do not add, mark & remove invalid tags (defaults to Tagify settings)
      */
     addTags(tags: string | string[] | TagData[], clearInput?: boolean, skipInvalid?: boolean): Node|Node[];
+
+    /**
+     * Bypasses the normalization process in `addTags`, forcefully adding tags at the last caret
+     * location or at the end, if there's no last caret location saved (at `tagify.state.selection`).
+     * @param tags - Accepts a String (word, single or multiple with a delimiter), an Array of Objects or Strings
+     */
+    addMixTags(tags: string | string[] | TagData[]): void;
 
     /**
      * Remove single/multiple tags. When nothing passed, removes last tag.
@@ -90,81 +120,139 @@ declare module '@yaireo/tagify' {
     removeTags(tagElms?: Node[] | Node | string, silent?: boolean, tranDuration?: number): void;
 
     /**
+     * Create an empty tag (optionally with predefined data) and enters "edit" mode directly.
+     */
+    addEmptyTag(initialData?: {[key: string]: any}): void;
+
+    /**
      * Converts the input's value into tags. This method gets called automatically when instantiating Tagify.
      * Also works for mixed-tags.
      */
-    loadOriginalValues(value: string): void;
+    loadOriginalValues(value: string | string[]): void;
 
     /**
-     * Converts a String argument (`[[foo]]⁠ and [[bar]]⁠ are..`) into HTML with mixed tags & texts
+     * Return an array of found matching items (case-insensitive).
+     */
+    getWhitelistItem(value: TagData): TagData[];
+
+    /**
+     * Returns how many tags already exists with specific value.
+     */
+    isTagDuplicate(value: string | TagData, caseSensitive?: boolean): number;
+
+    /**
+     * Converts a string argument (`[[foo]] and [[bar]] are...`) into HTML with mixed tags & texts.
      */
     parseMixTags(value: string): string;
 
     /**
-     * Return the index of a specific tag by value
+     * Return a DOM nodes list of all the tags.
+     * @param classes - Filter by set of class names
+     */
+    getTagElms(...classes: string[]): HTMLElement[];
+
+    /**
+     * Return a specific tag DOM node by value.
+     */
+    getTagElmByValue(value: string): HTMLElement;
+
+    /**
+     * Return the indices of tags by value.
      */
     getTagIndexByValue(value: string): number[];
 
     /**
-     * Return a DOM nodes list of all the tags
-     * @param classes - Filter by set of class names
-     */
-    getTagElms(classes?: string[]): NodeList;
-
-    /**
-     * Return a specific tag DOM node by value
-     */
-    getTagElmByValue(value: string): Node;
-
-    /**
      * Set/get tag data on a tag element
      */
-    tagData(tagElm: Node, data: TagData): TagData;
+    tagData(tagElm: HTMLElement, data?: TagData): TagData;
 
     /**
-     * Goes to edit-mode in a specific tag
+     * Enters a tag into "edit" mode.
+     * @param tagElm - The tag element to edit. If nothing specified, use the last one.
      */
-    editTag(node: Node): void;
+    editTag(tagElm?: HTMLElement): void;
 
     /**
-     * Replaces an exisitng tag with a new one. Used for updating a tag's data.
+     * Replaces an existing tag with a new one. Used for updating a tag's data.
      */
-    replaceTag(tagElm: Node, tagData: TagData): void;
+    replaceTag(tagElm: HTMLElement, tagData: TagData): void;
 
     /**
-     * Toogle loading state on/off (Ex. AJAX whitelist pulling)
+     * Toggle loading state on/off (e.g. for AJAX whitelist pulling)
      */
     loading(isLoading: boolean): this;
 
     /**
-     * Return a tag element from the supplied tag data
+     * Toggle specific tag loading state on/off.
      */
-    createTagElem(tagData: TagData): Node;
+    tagLoading(tagElm: Node, isLoading: boolean): this;
+
+    /**
+     * Return a tag element from the supplied tag data.
+     */
+    createTagElem(tagData: TagData): HTMLElement;
+
+    /**
+     * Injects text or HTML node at last caret position,
+     * which is saved on the "state" when "blur" event gets triggered.
+     * @param injectedNode - The node to inject at the caret position
+     * @param range - Optional range object, must have `anchorNode` and  `anchorOffset`
+     */
+    injectAtCaret(injectedNode: string | HTMLElement, range?: Selection): void;
+
+    /**
+     * Places the caret after a given node.
+     */
+    placeCaretAfterNode(node: HTMLElement): void;
+
+    insertAfterTag(tagElm: HTMLElement, newNode: string | HTMLElement): HTMLElement;
+
+    /**
+     * Toggles class on the man tagify container (`scope`).
+     */
+    toggleClass(className: string, on: boolean): void;
+
+    /**
+     * Update `value` (array of objects) by traversing all valid tags.
+     */
+    updateValueByDOMTags(): void;
+
+    /**
+     * Converts a template string into a DOM node.
+     * @param template - Select a template from the `settings.templates` by name or supply a template function which returns a string
+     * @param data - Arguments passed to the template function
+     */
+    parseTemplate(template: string | ((...args: any) => string), data: any[]): HTMLElement;
+
+    /**
+     * Toggles "readonly" mode on/off.
+     */
+    setReadonly(isReadonly: boolean): void;
 
     /**
      * Add event listener
      */
     on(event: 'add' | 'remove' | 'dblclick' | 'edit:beforeUpdate' | 'edit:updated', cb: (e: CustomEvent<{
-      tagify: Tagify, tag: Node, index?: number, data?: TagData
+      tagify: Tagify, tag: HTMLElement, index?: number, data?: TagData
     }>) => void): this;
     on(event: 'invalid', cb: (e: CustomEvent<{
-      tagify: Tagify, tag: Node, index?: number, data: TagData, message: boolean
+      tagify: Tagify, tag: HTMLElement, index?: number, data: TagData, message: boolean
     }>) => void): this;
     on(event: 'input', cb: (e: CustomEvent<{
       tagify: Tagify, value: string, inputElm: any
     }>) => void): this;
     on(event: 'click', cb: (e: CustomEvent<{
-      tagify: Tagify, tag: Node, index: number, data: TagData, originalEvent: MouseEvent
+      tagify: Tagify, tag: HTMLElement, index: number, data: TagData, originalEvent: MouseEvent
     }>) => void): this;
     on(event: 'keydown' | 'edit:keydown', cb: (e: CustomEvent<{ tagify: Tagify, originalEvent: KeyboardEvent }>) => void): this;
     on(event: 'focus' | 'blur', cb: (e: CustomEvent<{
       tagify: Tagify, relatedTarget: Element
     }>) => void): this;
     on(event: 'edit:start', cb: (e: CustomEvent<{
-      tagify: Tagify, tag: Node, index: number, data: TagData, isValid: boolean
+      tagify: Tagify, tag: HTMLElement, index: number, data: TagData, isValid: boolean
     }>) => void): this;
     on(event: 'edit:input', cb: (e: CustomEvent<{
-      tagify: Tagify, tag: Node, index: number, data: TagData & { newValue: string }, originalEvent: Event
+      tagify: Tagify, tag: HTMLElement, index: number, data: TagData & { newValue: string }, originalEvent: Event
     }>) => void): this;
     on(event: 'dropdown:show' | 'dropdown:hide' | 'dropdown:updated', cb: (e: CustomEvent<{
       tagify: Tagify, dropdown: Element
