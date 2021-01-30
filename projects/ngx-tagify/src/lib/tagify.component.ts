@@ -85,13 +85,22 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     this.value$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(tags => {
+
         if (!tags) { return; }
+
+        // add all tags (already existing tags will be skipped
         this.tagify.addTags(tags, false, true);
+
+        // remove all tags that are not part of value anymore
         this.tagify.value.forEach(v => {
           if (!tags.find(t => t.value === v.value)) {
-            this.tagify.removeTags(v.value);
+            // somehow removeTags() with string parameter doesn't always find the tag element
+            // this is a workaround for finding the right tag element
+            const tagElm = this.tagify.getTagElms().find(el => el.attributes.getNamedItem('value').textContent === v.value);
+            this.tagify.removeTags(tagElm);
           }
         });
+
       });
 
     // listen to tagify events
