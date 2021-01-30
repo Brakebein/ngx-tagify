@@ -11,10 +11,8 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { asyncScheduler, BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
-import Tagify from '@yaireo/tagify';
+import Tagify, { TagData, TagifySettings } from '@yaireo/tagify';
 import { TagifyService } from './tagify.service';
-import { TagData, TagifySettings } from './tagify-settings';
-
 
 @Component({
   selector: 'tagify',

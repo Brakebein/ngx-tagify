@@ -1,6 +1,6 @@
 {
   "name": "ngx-tagify-library",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Angular library that wraps @yaireo/tagify",
   "repository": {
     "type": "git",
@@ -48,6 +48,7 @@
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
+    "@types/yaireo__tagify": "^3.22.0",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
