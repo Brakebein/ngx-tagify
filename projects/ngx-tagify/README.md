@@ -183,6 +183,14 @@ export class AppComponent {
 }
 ```
 
+The original Tagify class is also exposed and can be used for type declarations or custom implementations.
+
+```typescript
+import { Tagify } from 'ngx-tagify';
+
+const tagify: Tagify = new Tagify(inputElement);
+```
+
 ## Styling
 
 You have two options to include the styling of Tagify.
