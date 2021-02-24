@@ -7,6 +7,12 @@ __[Demo](https://brakebein.github.io/ngx-tagify/)__
 
 Built with Angular version 11.0.7.
 
+* [Usage](#usage)
+* [Component](#component)
+* [Service](#service)
+* [Styling](#styling)
+* [FAQ](#faq)
+
 ## Usage
 
 Install via npm:
@@ -25,7 +31,7 @@ import { TagifyModule } from 'ngx-tagify';
     ...
   ]
 })
-export class AppModule() {}
+export class AppModule {}
 ```
 
 Include styling (see [below](#styling)).
@@ -214,4 +220,29 @@ __Option 2:__ If you want to override some of the styling, import it to a sass f
 
 .tagify
   --tags-border-color: #ff0000;
+```
+
+## FAQ
+
+### I'm getting TS compilation error!
+
+You are getting TypeScript compilation error with an error output like this:
+
+```
+ node_modules/@types/yaireo__tagify/index.d.ts:475:1
+    475 export = Tagify;
+        ~~~~~~~~~~~~~~~~
+    This module is declared with using 'export =', and can only be used with a default import when using the 'allowSyntheticDefaultImports' flag.
+```
+
+To resolve this issue, set `allowSyntheticDefaultImports` within `compilerOptions` in your `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    
+    "allowSyntheticDefaultImports": true,
+    
+  }
+}
 ```
