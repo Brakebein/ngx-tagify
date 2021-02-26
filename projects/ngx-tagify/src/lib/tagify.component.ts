@@ -121,7 +121,6 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
         // if string is passed, e.g. via reactive forms
         if (typeof tags === 'string') {
           this.tagify.loadOriginalValues(tags);
-          console.log(this.tagify);
           setTimeout(() => {
             this.value = this.tagify.value;
           });
