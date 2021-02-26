@@ -140,6 +140,29 @@ export class AppComponent implements OnInit {
 }
 ```
 
+### Predefined values
+
+You can also pass predefined tags as text between `<tagify></tagify>`. Mixed text & tags are also supported.
+```html
+<tagify>tag 1, tag 2</tagify>
+```
+```html
+<tagify [settings]="{ mode: 'mix' }">
+  [[Eric Cartman]] and [[kyle]] do not know [[homer simpson]] because he's a relic.
+</tagify>
+```
+
+Angular has problems with hard-coded single curly braces. Use property binding to add predefined tags with json syntax.
+
+```typescript
+originalText = '[[{"id":200, "value":"cartman", "title":"Eric Cartman"}]] and [[kyle]] do not know [[{"value":"homer simpson", "readonly":true}]] because he\'s a relic.';
+```
+```html
+<tagify [settings]="{ mode: 'mix' }">
+  {{ originalText }}
+</tagify>
+```
+
 ### Inputs
 
 | <!-- --> | <!-- --> |

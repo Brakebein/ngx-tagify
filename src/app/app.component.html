@@ -51,4 +51,16 @@
 
 <hr/>
 
+<h3>Mixed tags</h3>
+<p>with mixed mode (<code>mode: 'mix', pattern: /@|#/</code>) and predefined value between tagify element tags</p>
+<pre><code>{{originalText}}</code></pre>
+<p>
+  <tagify [(ngModel)]="mixedTags" [settings]="mixedSettings">
+    {{originalText}}
+  </tagify>
+</p>
+<p class="text-monospace">{{ mixedTags | json }}</p>
+
+<hr/>
+
 <p><a href="https://github.com/Brakebein/ngx-tagify">GitHub</a></p>

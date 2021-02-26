@@ -26,6 +26,21 @@ export class AppComponent implements OnInit {
 
   readonly = false;
 
+  mixedTags: TagData[] = [];
+  mixedSettings: TagifySettings = {
+    mode: 'mix',
+    pattern: /@|#/,
+    tagTextProp: 'text',
+    dropdown: {
+      enabled: 1,
+      position: 'text',
+      mapValueTo: 'text',
+      highlightFirst: true
+    }
+  };
+
+  originalText = '[[{"id":200, "value":"cartman", "title":"Eric Cartman"}]] and [[kyle]] do not know [[{"value":"homer simpson", "readonly":true}]] because he\'s a relic.';
+
   constructor(
     private tagifyService: TagifyService
   ) { }

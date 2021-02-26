@@ -16,7 +16,8 @@ import { TagifyService } from './tagify.service';
 
 @Component({
   selector: 'tagify',
-  template: `<input [ngClass]="inputClassValue" #inputRef/>`,
+  template: `<input [ngClass]="inputClassValue" #inputRef/>
+    <span style="display: none"><ng-content></ng-content></span>`,
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => TagifyComponent),
@@ -32,6 +33,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   private unsubscribe$ = new Subject<void>();
   private value$ = new BehaviorSubject<TagData[]>(null);
   private tagify: Tagify;
+  private skip = false;
 
   inputClassValue = '';
   readonlyValue = false;
@@ -84,6 +86,8 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       this.settings.callbacks.remove = () => this.remove.emit(this.tagify.value);
     }
 
+    const innerText = this.element.nativeElement.textContent;
+
     this.tagify = new Tagify(this.inputRef.nativeElement, this.settings);
 
     // add to service if name is provided
@@ -93,12 +97,26 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
     this.setReadonly();
 
+    // if there is some text inside component, load this value and skip first change check
+    if (innerText.length) {
+      this.tagify.loadOriginalValues(innerText);
+      this.skip = true;
+      setTimeout(() => {
+        this.value = this.tagify.value;
+      });
+    }
+
     // listen to value changes from outside
     this.value$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(tags => {
 
         if (!tags) { return; }
+
+        if (this.skip) {
+          this.skip = false;
+          return;
+        }
 
         // add all tags (already existing tags will be skipped
         this.tagify.addTags(tags, false, true);
