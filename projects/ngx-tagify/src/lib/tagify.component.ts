@@ -34,6 +34,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   private tagify: Tagify;
 
   inputClassValue = '';
+  readonlyValue = false;
 
   @ViewChild('inputRef', {static: true}) inputRef: ElementRef<HTMLInputElement>;
 
@@ -43,6 +44,10 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   @Input() set inputClass(v: string) {
     this.setTagsClass(v);
     this.inputClassValue = v;
+  }
+  @Input() set readonly(v: boolean) {
+    this.readonlyValue = !!v;
+    this.setReadonly();
   }
 
   get value(): TagData[] {
@@ -85,6 +90,8 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     if (this.name.length) {
       this.tagifyService.add(this.name, this.tagify);
     }
+
+    this.setReadonly();
 
     // listen to value changes from outside
     this.value$
@@ -160,6 +167,12 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     if (tagsElement) {
       tagsElement.classList.remove(...this.inputClassValue.split(/\s+/));
       tagsElement.classList.add(...v.split(/\s+/));
+    }
+  }
+
+  private setReadonly() {
+    if (this.tagify) {
+      this.tagify.setReadonly(this.readonlyValue);
     }
   }
 

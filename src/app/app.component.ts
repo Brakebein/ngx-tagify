@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
 
   whitelist$ = new BehaviorSubject<string[]>(['Hello', 'World']);
 
+  readonly = false;
+
   constructor(
     private tagifyService: TagifyService
   ) { }
