@@ -26,12 +26,12 @@ import { TagifyService } from './tagify.service';
 })
 export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnDestroy {
 
-  private valueData: TagData[];
+  private valueData: string|TagData[];
   private onChange: any = Function.prototype;
   private onTouched: any = Function.prototype;
 
   private unsubscribe$ = new Subject<void>();
-  private value$ = new BehaviorSubject<TagData[]>(null);
+  private value$ = new BehaviorSubject<string|TagData[]>(null);
   private tagify: Tagify;
   private skip = false;
 
@@ -52,11 +52,11 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     this.setReadonly();
   }
 
-  get value(): TagData[] {
+  get value(): string|TagData[] {
     return this.valueData;
   }
 
-  set value(v: TagData[]) {
+  set value(v: string|TagData[]) {
     if (v !== this.valueData) {
       this.valueData = v;
       this.onChange(v);
@@ -115,6 +115,16 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
         if (this.skip) {
           this.skip = false;
+          return;
+        }
+
+        // if string is passed, e.g. via reactive forms
+        if (typeof tags === 'string') {
+          this.tagify.loadOriginalValues(tags);
+          console.log(this.tagify);
+          setTimeout(() => {
+            this.value = this.tagify.value;
+          });
           return;
         }
 

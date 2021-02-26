@@ -48,6 +48,8 @@ interface TagData {
 }
 ```
 
+A string value can also be passed. It gets parsed by Tagify and transformed to tags. Keep in mind that the model returned will be an array of `TagData` again.
+
 ### Usage with `ngModel`
 
 Import `FormsModule` to your module.
@@ -141,6 +143,8 @@ export class AppComponent implements OnInit {
 ```
 
 ### Predefined values
+
+Either use `ngModel` or reactive forms with an initial string value that gets parsed by Tagify and transformed to an array of `TagData` which will override the string value. 
 
 You can also pass predefined tags as text between `<tagify></tagify>`. Mixed text & tags are also supported.
 ```html

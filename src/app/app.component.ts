@@ -12,7 +12,7 @@ import { TagData, TagifyService, TagifySettings } from 'ngx-tagify';
 export class AppComponent implements OnInit {
 
   form = new FormGroup({
-    tags: new FormControl([{ value: 'Reactive' }], Validators.minLength(3))
+    tags: new FormControl('Reactive, Form', Validators.minLength(3))
   });
 
   tags: TagData[] = [{ value: 'Super' }];
