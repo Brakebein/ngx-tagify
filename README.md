@@ -9,6 +9,11 @@ Built with Angular version 11.0.7.
 
 * [Usage](#usage)
 * [Component](#component)
+  * [Usage with ngModel](#usage-with-ngmodel)
+  * [Usage with Reactive Forms](#usage-with-reactive-forms)
+  * [Predefined values](#predefined-values)
+  * [Inputs](#inputs)
+  * [Outputs](#outputs)
 * [Service](#service)
 * [Styling](#styling)
 * [FAQ](#faq)

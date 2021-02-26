@@ -9,6 +9,11 @@ Built with Angular version 11.0.7.
 
 * [Usage](#usage)
 * [Component](#component)
+  * [Usage with ngModel](#usage-with-ngmodel)
+  * [Usage with Reactive Forms](#usage-with-reactive-forms)
+  * [Predefined values](#predefined-values)
+  * [Inputs](#inputs)
+  * [Outputs](#outputs)
 * [Service](#service)
 * [Styling](#styling)
 * [FAQ](#faq)
@@ -48,16 +53,18 @@ interface TagData {
 }
 ```
 
+A string value can also be passed. It gets parsed by Tagify and transformed to tags. Keep in mind that the model returned will be an array of `TagData` again.
+
 ### Usage with `ngModel`
 
 Import `FormsModule` to your module.
 
 ```html
-<tagify name="example1"
-        [(ngModel)]="tags"
+<tagify [(ngModel)]="tags"
         inputClass="form-control"
         [settings]="settings"
         [whitelist]="whitelist$"
+        [readonly]="readonly"
         (add)="onAdd($event)"
         (remove)="onRemove($event)"
 </tagify>
@@ -87,6 +94,8 @@ export class AppComponent {
   
   whitelist$ = new BehaviorSubject<string[]>(['hello', 'world']);
   
+  readonly = false;
+  
   onAdd(tagify) {
     console.log('added a tag', tagify);  
   }
@@ -108,7 +117,7 @@ Import `ReactiveFormsModule` to your module.
 
 ```html
 <form [formGroup]="form">
-  <tagify name="example2" formControlName="tags"></tagify>
+  <tagify formControlName="tags"></tagify>
 </form>
 ```
 
@@ -138,14 +147,40 @@ export class AppComponent implements OnInit {
 }
 ```
 
+### Predefined values
+
+Either use `ngModel` or reactive forms with an initial string value that gets parsed by Tagify and transformed to an array of `TagData` which will override the string value.
+
+You can also pass predefined tags as text between `<tagify></tagify>`. Mixed text & tags are also supported.
+```html
+<tagify>tag 1, tag 2</tagify>
+```
+```html
+<tagify [settings]="{ mode: 'mix' }">
+  [[Eric Cartman]] and [[kyle]] do not know [[homer simpson]] because he's a relic.
+</tagify>
+```
+
+Angular has problems with hard-coded single curly braces. Use property binding to add predefined tags with json syntax.
+
+```typescript
+originalText = '[[{"id":200, "value":"cartman", "title":"Eric Cartman"}]] and [[kyle]] do not know [[{"value":"homer simpson", "readonly":true}]] because he\'s a relic.';
+```
+```html
+<tagify [settings]="{ mode: 'mix' }">
+  {{ originalText }}
+</tagify>
+```
+
 ### Inputs
 
 | <!-- --> | <!-- --> |
 |---|---|
-|`name`|_Type:_ `string`<br>_Default value:_ `0`<br>Use different names if you want to use more than one tagify component on your page.|
 |`settings`|_Type:_ `TagifySettings`<br>See [tagify/Settings](https://github.com/yairEO/tagify#settings).|
 |`inputClass`|_Type:_ `string`<br>Apply one or more CSS classes to the input field (e.g. Bootstrap's `form-control`).|
-|`whitelist`|_Type:_ `Observable<string[]\|TagData[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.| 
+|`whitelist`|_Type:_ `Observable<string[]\|TagData[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.|
+|`readonly`|_Type:_ `boolean`<br>Dynamically change readonly status.|
+|`name`|_Type:_ `string`<br>Use the name attribute if you want to access the tagify component via the [service](#service). This name should be unique.|
 
 ### Outputs
 
@@ -161,9 +196,10 @@ Listen to all other events by defining respective callbacks ([tagify/Events](htt
 ## Service
 
 You can also gain access to the full [tagify API](https://github.com/yairEO/tagify#methods) via a service.
+Provide a `name`, such that the tagify instance will be available via the service.
 
 ```html
-<tagify name="example3"</tagify>
+<tagify name="example"</tagify>
 <button (click)="addTags()">Add tags</button>
 ```
 
@@ -183,7 +219,7 @@ export class AppComponent {
   ) {}
   
   addTags() {
-    this.tagifyService.get('example3').addTags(['this', 'is', 'cool']);
+    this.tagifyService.get('example').addTags(['this', 'is', 'cool']);
   }
   
 }
@@ -205,10 +241,10 @@ __Option 1:__ Modify your `angular.json` by adding the `.scss` file to the `styl
 
 ```json
 "options": {
-  "styles": [
-    "src/styles.scss",
-    "node_modules/ngx-tagify/styles/tagify.scss"
-  ]
+"styles": [
+"src/styles.scss",
+"node_modules/ngx-tagify/styles/tagify.scss"
+]
 }
 ```
 
@@ -219,7 +255,7 @@ __Option 2:__ If you want to override some of the styling, import it to a sass f
 @import "~ngx-tagify/styles/tagify";
 
 .tagify
-  --tags-border-color: #ff0000;
+--tags-border-color: #ff0000;
 ```
 
 ## FAQ
@@ -240,9 +276,9 @@ To resolve this issue, set `allowSyntheticDefaultImports` within `compilerOption
 ```json
 {
   "compilerOptions": {
-    
+
     "allowSyntheticDefaultImports": true,
-    
+
   }
 }
 ```
