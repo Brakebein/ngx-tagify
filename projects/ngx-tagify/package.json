@@ -18,7 +18,7 @@
   "homepage": "https://github.com/Brakebein/ngx-tagify#readme",
   "dependencies": {
     "@types/yaireo__tagify": "^3.22.0",
-    "@yaireo/tagify": "^3.22.1",
+    "@yaireo/tagify": "^3.23.0",
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
