@@ -16,7 +16,7 @@ import { TagifyService } from './tagify.service';
 
 @Component({
   selector: 'tagify',
-  template: `<input [name]="name" [ngClass]="inputClassValue" #inputRef/>`,
+  template: `<input [ngClass]="inputClassValue" #inputRef/>`,
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => TagifyComponent),
@@ -38,7 +38,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   @ViewChild('inputRef', {static: true}) inputRef: ElementRef<HTMLInputElement>;
 
   @Input() settings: TagifySettings = {};
-  @Input() name = '0';
+  @Input() name = '';
   @Input() whitelist: Observable<string[]|TagData[]>;
   @Input() set inputClass(v: string) {
     this.setTagsClass(v);
@@ -79,7 +79,12 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       this.settings.callbacks.remove = () => this.remove.emit(this.tagify.value);
     }
 
-    this.tagify = this.tagifyService.init(this.inputRef.nativeElement, this.settings);
+    this.tagify = new Tagify(this.inputRef.nativeElement, this.settings);
+
+    // add to service if name is provided
+    if (this.name.length) {
+      this.tagifyService.add(this.name, this.tagify);
+    }
 
     // listen to value changes from outside
     this.value$
@@ -161,7 +166,12 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    this.tagifyService.destroy(this.name);
+
+    this.tagify.destroy();
+
+    if (this.name.length) {
+      this.tagifyService.remove(this.name);
+    }
   }
 
 }

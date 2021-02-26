@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Tagify, { TagifySettings } from '@yaireo/tagify';
+import Tagify from '@yaireo/tagify';
 
 @Injectable({
   providedIn: 'root'
@@ -11,21 +11,14 @@ export class TagifyService {
   constructor() { }
 
   /**
-   * Initialize input element with tagify. Used internally.
+   * Adds a tagify instance, so it is available via service. Used internally.
    */
-  init(inputRef: HTMLInputElement, settings: TagifySettings): Tagify {
-    if (arguments.length === 0) {
+  add(name: string, tagify: Tagify): void {
+    if (this.tagifyMap.get(name)) {
+      console.warn(`There already exists a tagify instance with name ${name}!`);
       return;
     }
-
-    if (this.tagifyMap.get(inputRef.name)) {
-      return this.tagifyMap.get(inputRef.name);
-    }
-
-    const tagify = new Tagify(inputRef, settings);
-    this.tagifyMap.set(inputRef.name, tagify);
-
-    return tagify;
+    this.tagifyMap.set(name, tagify);
   }
 
   /**
@@ -36,10 +29,9 @@ export class TagifyService {
   }
 
   /**
-   * Destroy dom and everything. Used internally.
+   * Removes a tagify instance from service. Used internally.
    */
-  public destroy(name: string): void {
-    this.tagifyMap.get(name).destroy();
+  remove(name: string): void {
     this.tagifyMap.delete(name);
   }
 

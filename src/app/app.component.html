@@ -37,7 +37,6 @@
 <p>with Bootstrap <code>form-control</code> class and form validation</p>
 <form [formGroup]="form" class="was-validated mb-2">
   <tagify formControlName="tags"
-          name="reactive"
           [class.is-invalid]="form.invalid"
           [inputClass]="'form-control' + (form.invalid ? ' is-invalid' : '')">
   </tagify>

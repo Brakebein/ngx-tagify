@@ -53,8 +53,7 @@ interface TagData {
 Import `FormsModule` to your module.
 
 ```html
-<tagify name="example1"
-        [(ngModel)]="tags"
+<tagify [(ngModel)]="tags"
         inputClass="form-control"
         [settings]="settings"
         [whitelist]="whitelist$"
@@ -108,7 +107,7 @@ Import `ReactiveFormsModule` to your module.
 
 ```html
 <form [formGroup]="form">
-  <tagify name="example2" formControlName="tags"></tagify>
+  <tagify formControlName="tags"></tagify>
 </form>
 ```
 
@@ -142,10 +141,10 @@ export class AppComponent implements OnInit {
 
 | <!-- --> | <!-- --> |
 |---|---|
-|`name`|_Type:_ `string`<br>_Default value:_ `0`<br>Use different names if you want to use more than one tagify component on your page.|
 |`settings`|_Type:_ `TagifySettings`<br>See [tagify/Settings](https://github.com/yairEO/tagify#settings).|
 |`inputClass`|_Type:_ `string`<br>Apply one or more CSS classes to the input field (e.g. Bootstrap's `form-control`).|
-|`whitelist`|_Type:_ `Observable<string[]\|TagData[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.| 
+|`whitelist`|_Type:_ `Observable<string[]\|TagData[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.|
+|`name`|_Type:_ `string`<br>Use the name attribute if you want to access the tagify component via the [service](#service). This name should be unique.|
 
 ### Outputs
 
@@ -161,9 +160,10 @@ Listen to all other events by defining respective callbacks ([tagify/Events](htt
 ## Service
 
 You can also gain access to the full [tagify API](https://github.com/yairEO/tagify#methods) via a service.
+Provide a `name`, such that the tagify instance will be available via the service.
 
 ```html
-<tagify name="example3"</tagify>
+<tagify name="example"</tagify>
 <button (click)="addTags()">Add tags</button>
 ```
 
@@ -183,7 +183,7 @@ export class AppComponent {
   ) {}
   
   addTags() {
-    this.tagifyService.get('example3').addTags(['this', 'is', 'cool']);
+    this.tagifyService.get('example').addTags(['this', 'is', 'cool']);
   }
   
 }
