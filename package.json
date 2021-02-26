@@ -1,6 +1,6 @@
 {
   "name": "ngx-tagify-library",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Angular library that wraps @yaireo/tagify",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build ngx-tagify --prod",
     "build-demo": "ng build --prod --base-href=/ngx-tagify/",
     "test": "ng test",
     "lint": "ng lint",
