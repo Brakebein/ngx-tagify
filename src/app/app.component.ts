@@ -12,8 +12,9 @@ import { TagData, TagifyService, TagifySettings } from 'ngx-tagify';
 export class AppComponent implements OnInit {
 
   form = new FormGroup({
-    tags: new FormControl('Reactive, Form', Validators.minLength(3))
+    tags: new FormControl( [], Validators.minLength(3))
   });
+  predefinedValue = 'Reactive, Form';
 
   tags: TagData[] = [{ value: 'Super' }];
 
@@ -26,7 +27,6 @@ export class AppComponent implements OnInit {
 
   readonly = false;
 
-  mixedTags: TagData[] = [];
   mixedSettings: TagifySettings = {
     mode: 'mix',
     pattern: /@|#/,
@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
   };
 
   originalText = '[[{"id":200, "value":"cartman", "title":"Eric Cartman"}]] and [[kyle]] do not know [[{"value":"homer simpson", "readonly":true}]] because he\'s a relic.';
+  mixedValue = '[[{"id":200, "value":"cartman", "title":"Eric Cartman"}]] and [[kyle]] do not know [[{"value":"homer simpson", "readonly":true}]] because he\'s a relic.';
 
   constructor(
     private tagifyService: TagifyService

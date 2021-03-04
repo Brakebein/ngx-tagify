@@ -27,6 +27,7 @@ import { TagifyService } from './tagify.service';
 export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnDestroy {
 
   private valueData: string|TagData[];
+  private valueType = 'undefined';
   private onChange: any = Function.prototype;
   private onTouched: any = Function.prototype;
 
@@ -102,7 +103,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       this.tagify.loadOriginalValues(innerText);
       this.skip = true;
       setTimeout(() => {
-        this.value = this.tagify.value;
+        this.setValue();
       });
     }
 
@@ -118,11 +119,15 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
           return;
         }
 
+        if (this.valueType === 'undefined') {
+          this.valueType = typeof tags;
+        }
+
         // if string is passed, e.g. via reactive forms
         if (typeof tags === 'string') {
           this.tagify.loadOriginalValues(tags);
           setTimeout(() => {
-            this.value = this.tagify.value;
+            this.setValue();
           });
           return;
         }
@@ -145,6 +150,10 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     // listen to tagify events
     this.tagify.on('input', e => {
       this.tInput.emit(e.detail.value);
+      if (this.valueType === 'string' && this.tagify.settings.mode === 'mix') {
+        // @ts-ignore - `getMixedTagsAsString` not yet part of type declarations
+        this.value = this.tagify.getMixedTagsAsString();
+      }
     });
 
     merge(
@@ -159,7 +168,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
         takeUntil(this.unsubscribe$)
       )
       .subscribe(() => {
-        this.value = this.tagify.value.slice();
+        this.setValue();
       });
 
     // listen to suggestions updates
@@ -172,7 +181,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     }
   }
 
-  writeValue(tags: TagData[]) {
+  writeValue(tags: string|TagData[]) {
     this.value$.next(tags);
   }
 
@@ -182,6 +191,14 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
   registerOnTouched(fn: any) {
     this.onTouched = fn;
+  }
+
+  private setValue(): void {
+    if (this.valueType === 'string') {
+      this.value = this.tagify.DOM.originalInput.value;
+    } else {
+      this.value = this.tagify.value.slice();
+    }
   }
 
   /**

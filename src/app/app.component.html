@@ -36,11 +36,12 @@
 <hr/>
 
 <h3>Reactive form</h3>
-<p>with Bootstrap <code>form-control</code> class, form validation, and initial string value <code>'Reactive, Form'</code></p>
+<p>with Bootstrap <code>form-control</code> class, form validation, and initial, predefined value between tagify element tags <code>'Reactive, Form'</code></p>
 <form [formGroup]="form" class="was-validated mb-2">
   <tagify formControlName="tags"
           [class.is-invalid]="form.invalid"
           [inputClass]="'form-control' + (form.invalid ? ' is-invalid' : '')">
+    {{ predefinedValue }}
   </tagify>
   <div class="invalid-feedback">
     Add at least 3 tags.
@@ -52,14 +53,14 @@
 <hr/>
 
 <h3>Mixed tags</h3>
-<p>with mixed mode (<code>mode: 'mix', pattern: /@|#/</code>) and predefined value between tagify element tags</p>
-<pre><code>{{originalText}}</code></pre>
+<p>with mixed mode (<code>mode: 'mix', pattern: /@|#/</code>) and string value for <code>ngModel</code></p>
+<p class="text-monospace small"><i>Original input:</i> {{originalText}}</p>
 <p>
-  <tagify [(ngModel)]="mixedTags" [settings]="mixedSettings">
-    {{originalText}}
+  <tagify [(ngModel)]="mixedValue"
+          [settings]="mixedSettings">
   </tagify>
 </p>
-<p class="text-monospace">{{ mixedTags | json }}</p>
+<p class="text-monospace small"><i>Output:</i> {{ mixedValue }}</p>
 
 <hr/>
 
