@@ -7,7 +7,7 @@ __[Demo](https://brakebein.github.io/ngx-tagify/)__
 
 Built with Angular version 11.0.7.
 
-* [Usage](#usage)
+* [Install](#install)
 * [Component](#component)
   * [Usage with ngModel](#usage-with-ngmodel)
   * [Usage with Reactive Forms](#usage-with-reactive-forms)
@@ -18,7 +18,7 @@ Built with Angular version 11.0.7.
 * [Styling](#styling)
 * [FAQ](#faq)
 
-## Usage
+## Install
 
 Install via npm:
 
@@ -44,7 +44,7 @@ Include styling (see [below](#styling)).
 ## Component
 
 You can use the `<tagify>` component either with `ngModel` or with reactive forms.
-Either way, it takes an array of `TagData`, i.e. an `Object` that contains a unique property `value`:
+Either way, it takes a `string` or an array of `TagData`, i.e. an `Object` that contains a unique property `value`:
 
 ```typescript
 interface TagData {
@@ -53,7 +53,7 @@ interface TagData {
 }
 ```
 
-A string value can also be passed. It gets parsed by Tagify and transformed to tags. Keep in mind that the model returned will be an array of `TagData` again.
+If a string is passed, it gets parsed for tags by Tagify. The returned string is the stringified tags array or, if `mode: 'mix'`, the mixed text and tags string.
 
 ### Usage with `ngModel`
 
@@ -83,6 +83,7 @@ import { TagData, TagifySettings } from 'ngx-tagify';
 export class AppComponent {
     
   tags: TagData[] = [{ value: 'foo' }];
+  // tags = 'foo'; -> if you want to pass as string
     
   settings: TagifySettings = {
     placeholder: 'Start typing...',
@@ -149,9 +150,9 @@ export class AppComponent implements OnInit {
 
 ### Predefined values
 
-Either use `ngModel` or reactive forms with an initial string value that gets parsed by Tagify and transformed to an array of `TagData` which will override the string value. 
+Use `ngModel` or reactive forms with an initial string value that gets parsed by Tagify.
 
-You can also pass predefined tags as text between `<tagify></tagify>`. Mixed text & tags are also supported.
+If you want to pass predefined tags as text, but receive a tags array as output, pass the value as text between `<tagify></tagify>`. Mixed text & tags are also supported.
 ```html
 <tagify>tag 1, tag 2</tagify>
 ```
@@ -199,7 +200,7 @@ You can also gain access to the full [tagify API](https://github.com/yairEO/tagi
 Provide a `name`, such that the tagify instance will be available via the service.
 
 ```html
-<tagify name="example"</tagify>
+<tagify name="example"></tagify>
 <button (click)="addTags()">Add tags</button>
 ```
 
