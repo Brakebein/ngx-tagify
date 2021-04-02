@@ -243,8 +243,8 @@ __Option 1:__ Modify your `angular.json` by adding the `.scss` file to the `styl
 ```json
 "options": {
   "styles": [
-    "src/styles.scss",
-    "node_modules/ngx-tagify/styles/tagify.scss"
+    "node_modules/ngx-tagify/styles/tagify.scss",
+    "src/styles.scss"
   ]
 }
 ```
@@ -258,6 +258,23 @@ __Option 2:__ If you want to override some of the styling, import it to a sass f
 .tagify
   --tags-border-color: #ff0000;
 ```
+
+#### Usage with Bootstrap
+
+If you are using Bootstrap as CSS framework (as used in the demo), you might need to tweak some styles in order that Tagify looks pretty:
+
+```scss
+.tagify
+  --tag-pad: 0 0.5rem;  
+  line-height: 1.5;
+
+.tagify__input:empty::before
+  line-height: inherit;
+
+.tagify.form-control
+  height: unset;
+```
+
 
 ## FAQ
 
