@@ -151,15 +151,12 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     this.tagify.on('input', e => {
       this.tInput.emit(e.detail.value);
       if (this.valueType === 'string' && this.tagify.settings.mode === 'mix') {
-        // @ts-ignore - `getMixedTagsAsString` not yet part of type declarations
         this.value = this.tagify.getMixedTagsAsString();
       }
     });
 
     merge(
-      // @ts-ignore
       fromEvent(this.tagify, 'add'),
-      // @ts-ignore
       fromEvent(this.tagify, 'remove')
     )
       .pipe(
