@@ -112,7 +112,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(tags => {
 
-        if (!tags) { return; }
+        if (tags === null) { return; }
 
         if (this.skip) {
           this.skip = false;
