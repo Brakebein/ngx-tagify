@@ -1,66 +1,23 @@
 <h1>ngx-tagify</h1>
 <hr/>
 
-<h3>Simple tagify</h3>
-<p>using <code>[(ngModel)]</code>, dynamic readonly</p>
-<p>
-  <tagify [(ngModel)]="tags"
-          [readonly]="readonly"
-          (add)="onAdd($event)"
-          (remove)="onRemove($event)">
-  </tagify>
-</p>
-<p>
-  <button (click)="replaceTags()" class="btn btn-secondary btn-sm mr-2">Replace tags</button>
-  <button (click)="readonly = !readonly" class="btn btn-secondary btn-sm">Toggle readonly: {{readonly}}</button>
-</p>
-<p class="text-monospace">{{ tags | json }}</p>
+<app-example-simple></app-example-simple>
 
 <hr/>
 
-<h3>Another tagify</h3>
-<p>controlled by <code>TagifyService</code> and suggestions (<code>Hello</code>, <code>World</code>)</p>
-<p>
-  <tagify name="test"
-          [settings]="settings"
-          [whitelist]="whitelist$"
-          (add)="onAdd($event)"
-          (remove)="onRemove($event)">
-  </tagify>
-</p>
-<p>
-  <button (click)="clearTags()" class="btn btn-secondary btn-sm mr-2">Clear</button>
-  <button (click)="addTags()" class="btn btn-secondary btn-sm">Add tags</button>
-</p>
+<app-example-service></app-example-service>
 
 <hr/>
 
-<h3>Reactive form</h3>
-<p>with Bootstrap <code>form-control</code> class, form validation, and initial, predefined value between tagify element tags <code>'Reactive, Form'</code></p>
-<form [formGroup]="form" class="was-validated mb-2">
-  <tagify formControlName="tags"
-          [class.is-invalid]="form.invalid"
-          [inputClass]="'form-control' + (form.invalid ? ' is-invalid' : '')">
-    {{ predefinedValue }}
-  </tagify>
-  <div class="invalid-feedback">
-    Add at least 3 tags.
-  </div>
-</form>
-<p>Form is valid: <span class="text-monospace">{{ form.valid }}</span></p>
-<p class="text-monospace">{{ form.value | json }}</p>
+<app-example-reactive-form></app-example-reactive-form>
 
 <hr/>
 
-<h3>Mixed tags</h3>
-<p>with mixed mode (<code>mode: 'mix', pattern: /@|#/</code>) and string value for <code>ngModel</code></p>
-<p class="text-monospace small"><i>Original input:</i> {{originalText}}</p>
-<p>
-  <tagify [(ngModel)]="mixedValue"
-          [settings]="mixedSettings">
-  </tagify>
-</p>
-<p class="text-monospace small"><i>Output:</i> {{ mixedValue }}</p>
+<app-example-mixed></app-example-mixed>
+
+<hr/>
+
+<app-example-templates></app-example-templates>
 
 <hr/>
 

@@ -1,0 +1,15 @@
+<h3>Another tagify</h3>
+<p>controlled by <code>TagifyService</code> and suggestions (<code>Hello</code>, <code>World</code>)</p>
+<p>
+  <tagify name="test"
+          [settings]="settings"
+          [whitelist]="whitelist$"
+          (add)="onAdd($event)"
+          (remove)="onRemove($event)">
+  </tagify>
+</p>
+<p>
+  <button (click)="clearTags()" class="btn btn-secondary btn-sm mr-2">Clear</button>
+  <button (click)="addTags()" class="btn btn-secondary btn-sm">Add tags</button>
+</p>
+<p><a href="https://github.com/Brakebein/ngx-tagify/tree/master/src/app/example-service" target="_blank">Code</a></p>
