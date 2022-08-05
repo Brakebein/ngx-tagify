@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/Brakebein/ngx-tagify#readme",
   "dependencies": {
-    "@types/yaireo__tagify": "^4.15.0",
+    "@types/yaireo__tagify": "^4.15.1",
     "@yaireo/tagify": "^4.15.2",
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": ">=9.0.0",
-    "@angular/core": ">=9.0.0",
+    "@angular/common": "^13.3.11",
+    "@angular/core": "^13.3.11",
     "rxjs": ">=6.0.0"
   }
 }
