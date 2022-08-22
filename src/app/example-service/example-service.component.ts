@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { TagifyService, TagifySettings } from 'ngx-tagify';
 
@@ -7,7 +7,7 @@ import { TagifyService, TagifySettings } from 'ngx-tagify';
   templateUrl: './example-service.component.html',
   styleUrls: ['./example-service.component.css']
 })
-export class ExampleServiceComponent implements OnInit {
+export class ExampleServiceComponent {
 
   settings: TagifySettings = {
     placeholder: 'Start typing...',
@@ -19,9 +19,6 @@ export class ExampleServiceComponent implements OnInit {
   constructor(
     private readonly tagifyService: TagifyService
   ) { }
-
-  ngOnInit(): void {
-  }
 
   onAdd(tagify) {
     console.log('added a tag', tagify);

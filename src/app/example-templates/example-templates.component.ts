@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { TagifySettings } from '@yaireo/tagify';
+import { Component } from '@angular/core';
+import { TagifySettings } from 'ngx-tagify';
 
 interface UserTag {
   value: string;
@@ -14,7 +14,7 @@ interface UserTag {
   templateUrl: './example-templates.component.html',
   styleUrls: ['./example-templates.component.css']
 })
-export class ExampleTemplatesComponent implements OnInit {
+export class ExampleTemplatesComponent {
 
   settings: TagifySettings<UserTag> = {
     tagTextProp: 'name',
@@ -199,12 +199,6 @@ export class ExampleTemplatesComponent implements OnInit {
       }
     ]
   };
-
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   private validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
