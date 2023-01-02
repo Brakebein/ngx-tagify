@@ -1,6 +1,6 @@
 {
   "name": "ngx-tagify",
-  "version": "0.7.3",
+  "version": "14.0.0",
   "description": "Angular library that wraps @yaireo/tagify",
   "repository": {
     "type": "git",
@@ -22,8 +22,8 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": ">=9.0.0",
-    "@angular/core": ">=9.0.0",
+    "@angular/common": ">=14.0.0",
+    "@angular/core": ">=14.0.0",
     "rxjs": ">=6.0.0"
   }
 }
