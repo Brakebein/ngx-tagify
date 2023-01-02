@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-example-reactive-form',
@@ -8,8 +8,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class ExampleReactiveFormComponent implements OnInit {
 
-  form = new FormGroup({
-    tags: new FormControl( [], Validators.minLength(3))
+  form = new UntypedFormGroup({
+    tags: new UntypedFormControl([], Validators.minLength(3))
   });
   predefinedValue = 'Reactive, Form';
 
