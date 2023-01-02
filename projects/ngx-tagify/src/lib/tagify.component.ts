@@ -2,15 +2,23 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter, forwardRef,
+  EventEmitter,
+  forwardRef,
   Input,
   OnDestroy,
   Output,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { asyncScheduler, BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
+import {
+  asyncScheduler,
+  BehaviorSubject,
+  fromEvent,
+  merge,
+  Observable,
+  Subject,
+  takeUntil,
+  throttleTime } from 'rxjs';
 import Tagify, { TagData, TagifySettings } from '@yaireo/tagify';
 import { TagifyService } from './tagify.service';
 
@@ -192,7 +200,11 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
   private setValue(): void {
     if (this.valueType === 'string') {
-      this.value = this.tagify.DOM.originalInput.value;
+      if (this.tagify.settings.mode === 'mix') {
+        this.value = this.tagify.getMixedTagsAsString();
+      } else {
+        this.value = this.tagify.DOM.originalInput.value;
+      }
     } else {
       this.value = this.tagify.value.slice();
     }
