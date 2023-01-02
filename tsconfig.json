@@ -7,6 +7,7 @@
     "declaration": false,
     "module": "es2020",
     "moduleResolution": "node",
+    "newLine": "lf",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
