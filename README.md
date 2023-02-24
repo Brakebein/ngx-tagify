@@ -58,15 +58,15 @@ If a string is passed, it gets parsed for tags by Tagify. The returned string is
 Import `FormsModule` to your module.
 
 ```html
-<tagify [(ngModel)]="tags"
-        inputClass="form-control"
-        [settings]="settings"
-        [whitelist]="whitelist$"
-        [readonly]="readonly"
-        (add)="onAdd($event)"
-        (remove)="onRemove($event)"
->
-</tagify>
+<tagify
+  [(ngModel)]="tags"
+  inputClass="form-control"
+  [settings]="settings"
+  [whitelist]="whitelist$"
+  [readonly]="readonly"
+  (add)="onAdd($event)"
+  (remove)="onRemove($event)"
+></tagify>
 ```
 
 ```typescript
