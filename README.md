@@ -65,6 +65,7 @@ Import `FormsModule` to your module.
         [readonly]="readonly"
         (add)="onAdd($event)"
         (remove)="onRemove($event)"
+>
 </tagify>
 ```
 
