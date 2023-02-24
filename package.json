@@ -1,6 +1,6 @@
 {
   "name": "ngx-tagify-library",
-  "version": "15.0.0",
+  "version": "15.0.1",
   "description": "Angular library that wraps @yaireo/tagify",
   "repository": {
     "type": "git",
@@ -8,7 +8,10 @@
   },
   "keywords": [
     "angular",
-    "tagify"
+    "ngx",
+    "tagify",
+    "tags",
+    "tagging"
   ],
   "author": "Brakebein",
   "license": "MIT",
