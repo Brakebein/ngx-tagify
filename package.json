@@ -21,6 +21,7 @@
     "start": "ng serve",
     "build": "ng build ngx-tagify --configuration production",
     "build-demo": "ng build --configuration production --base-href=/ngx-tagify/",
+    "postbuild": "cpy README.md dist/ngx-tagify",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -51,6 +52,7 @@
     "@types/node": "^18.11.18",
     "@types/yaireo__tagify": "^4.16.1",
     "codelyzer": "^6.0.2",
+    "cpy-cli": "^4.2.0",
     "jasmine-core": "^4.5.0",
     "jasmine-spec-reporter": "^7.0.0",
     "karma": "^6.4.1",
