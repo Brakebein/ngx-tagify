@@ -2,7 +2,8 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter, forwardRef,
+  EventEmitter,
+  forwardRef,
   Input,
   OnDestroy,
   Output,
@@ -192,7 +193,11 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
   private setValue(): void {
     if (this.valueType === 'string') {
-      this.value = this.tagify.DOM.originalInput.value;
+      if (this.tagify.settings.mode === 'mix') {
+        this.value = this.tagify.getMixedTagsAsString();
+      } else {
+        this.value = this.tagify.DOM.originalInput.value;
+      }
     } else {
       this.value = this.tagify.value.slice();
     }
