@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { asyncScheduler, BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { asyncScheduler, BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import Tagify, { TagData, TagifySettings } from '@yaireo/tagify';
 import { TagifyService } from './tagify.service';
@@ -156,10 +156,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       }
     });
 
-    merge(
-      fromEvent(this.tagify, 'add'),
-      fromEvent(this.tagify, 'remove')
-    )
+    fromEvent(this.tagify, 'change')
       .pipe(
         // throttle used to reduce number of value changes when adding/removing a bunch of tags
         throttleTime(0, asyncScheduler, { leading: false, trailing: true }),
