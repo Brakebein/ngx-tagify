@@ -111,7 +111,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     // listen to value changes from outside
     this.value$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(tags => {
+      .subscribe((tags) => {
 
         if (tags === null) { return; }
 
@@ -137,11 +137,11 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
         this.tagify.addTags(tags, false, true);
 
         // remove all tags that are not part of value anymore
-        this.tagify.value.forEach(v => {
-          if (!tags.find(t => t.value === v.value)) {
+        this.tagify.value.forEach((v) => {
+          if (!tags.find((t) => t.value === v.value)) {
             // somehow removeTags() with string parameter doesn't always find the tag element
             // this is a workaround for finding the right tag element
-            const tagElm = this.tagify.getTagElms().find(el => el.attributes.getNamedItem('value').textContent === v.value);
+            const tagElm = this.tagify.getTagElms().find((el) => el.attributes.getNamedItem('value').textContent === v.value);
             this.tagify.removeTags(tagElm);
           }
         });
@@ -149,8 +149,9 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       });
 
     // listen to tagify events
-    this.tagify.on('input', e => {
-      this.tInput.emit(e.detail.value);
+    this.tagify.on('input', (e) => {
+      const value = 'value' in e.detail ? e.detail.value : e.detail.textContent;
+      this.tInput.emit(value);
       if (this.valueType === 'string' && this.tagify.settings.mode === 'mix') {
         this.value = this.tagify.getMixedTagsAsString();
       }
@@ -170,7 +171,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     if (this.whitelist) {
       this.whitelist
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(list => {
+        .subscribe((list) => {
           this.tagify.settings.whitelist = list;
         });
     }
