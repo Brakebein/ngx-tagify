@@ -14,7 +14,6 @@ import {
   asyncScheduler,
   BehaviorSubject,
   fromEvent,
-  merge,
   Observable,
   Subject,
   takeUntil,
@@ -164,10 +163,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       }
     });
 
-    merge(
-      fromEvent(this.tagify, 'add'),
-      fromEvent(this.tagify, 'remove')
-    )
+    fromEvent(this.tagify, 'change')
       .pipe(
         // throttle used to reduce number of value changes when adding/removing a bunch of tags
         throttleTime(0, asyncScheduler, { leading: false, trailing: true }),
