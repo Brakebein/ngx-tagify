@@ -252,7 +252,7 @@ __Option 2:__ If you want to override some of the styling, import it to a sass f
 
 ```scss
 // src/styles.scss
-@import "node_modules/ngx-tagify/styles/tagify";
+@import "ngx-tagify/styles/tagify";
 
 .tagify
   --tags-border-color: #ff0000;
