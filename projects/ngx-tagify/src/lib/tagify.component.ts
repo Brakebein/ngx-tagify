@@ -15,9 +15,12 @@ import {
   BehaviorSubject,
   fromEvent,
   Observable,
-  Subject,
+  Subject
+} from 'rxjs';
+import {
   takeUntil,
-  throttleTime } from 'rxjs';
+  throttleTime,
+} from 'rxjs/operators';
 import Tagify, { TagData, TagifySettings } from '@yaireo/tagify';
 import { TagifyService } from './tagify.service';
 
