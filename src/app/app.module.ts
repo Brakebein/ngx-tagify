@@ -23,7 +23,7 @@ import { ExampleTemplatesComponent } from './example-templates/example-templates
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    TagifyModule.forRoot()
+    TagifyModule
   ],
   providers: [],
   bootstrap: [AppComponent]

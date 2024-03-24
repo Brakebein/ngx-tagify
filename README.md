@@ -30,7 +30,7 @@ import { TagifyModule } from 'ngx-tagify';
 @NgModule({
   imports: [
     ...
-    TagifyModule.forRoot(),
+    TagifyModule,
     ...
   ]
 })

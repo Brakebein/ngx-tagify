@@ -8,8 +8,6 @@ export class TagifyService {
 
   private tagifyMap = new Map<string, Tagify>();
 
-  constructor() { }
-
   /**
    * Adds a tagify instance, so it is available via service. Used internally.
    */

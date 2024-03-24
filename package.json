@@ -39,7 +39,7 @@
     "@angular/platform-browser": "^16.2.12",
     "@angular/platform-browser-dynamic": "^16.2.12",
     "@angular/router": "^16.2.12",
-    "@yaireo/tagify": "^4.22.2",
+    "@yaireo/tagify": "4.21.1",
     "bootstrap": "^4.6.2",
     "rxjs": "^7.8.0",
     "tslib": "^2.4.1",
