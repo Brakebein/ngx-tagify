@@ -12,6 +12,8 @@ export class ExampleSimpleComponent {
 
   readonly = false;
 
+  disabled = false;
+
   replaceTags() {
     this.tags = [
       {value: 'this'},

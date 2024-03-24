@@ -47,20 +47,30 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   private skip = false;
 
   inputClassValue = '';
-  readonlyValue = false;
+  private readonlyValue = false;
+  private disabledValue = false;
 
   @ViewChild('inputRef', {static: true}) inputRef: ElementRef<HTMLInputElement>;
 
   @Input() settings: TagifySettings = {};
+
   @Input() name = '';
+
   @Input() whitelist: Observable<string[]|TagData[]>;
+
   @Input() set inputClass(v: string) {
     this.setTagsClass(v);
     this.inputClassValue = v;
   }
+
   @Input() set readonly(v: boolean) {
     this.readonlyValue = !!v;
     this.setReadonly();
+  }
+
+  @Input() set disabled(v: boolean) {
+    this.disabledValue = !!v;
+    this.setDisabled();
   }
 
   get value(): string|TagData[] {
@@ -107,6 +117,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     }
 
     this.setReadonly();
+    this.setDisabled();
 
     // if there is some text inside component, load this value and skip first change check
     if (innerText.length) {
@@ -226,6 +237,12 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   private setReadonly() {
     if (this.tagify) {
       this.tagify.setReadonly(this.readonlyValue);
+    }
+  }
+
+  private setDisabled() {
+    if (this.tagify) {
+      this.tagify.setDisabled(this.disabledValue);
     }
   }
 
