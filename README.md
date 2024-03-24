@@ -64,6 +64,7 @@ Import `FormsModule` to your module.
   [settings]="settings"
   [whitelist]="whitelist$"
   [readonly]="readonly"
+  [disabled]="disabled"
   (add)="onAdd($event)"
   (remove)="onRemove($event)"
 ></tagify>
@@ -95,6 +96,8 @@ export class AppComponent {
   whitelist$ = new BehaviorSubject<string[]>(['hello', 'world']);
   
   readonly = false;
+  
+  disabled = false;
   
   onAdd(tagify) {
     console.log('added a tag', tagify);  
@@ -174,13 +177,14 @@ originalText = '[[{"id":200, "value":"cartman", "title":"Eric Cartman"}]] and [[
 
 ### Inputs
 
-| <!-- --> | <!-- --> |
-|---|---|
-|`settings`|_Type:_ `TagifySettings`<br>See [tagify/Settings](https://github.com/yairEO/tagify#settings).|
-|`inputClass`|_Type:_ `string`<br>Apply one or more CSS classes to the input field (e.g. Bootstrap's `form-control`).|
-|`whitelist`|_Type:_ `Observable<string[]\|TagData[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable.|
-|`readonly`|_Type:_ `boolean`<br>Dynamically change readonly status.|
-|`name`|_Type:_ `string`<br>Use the name attribute if you want to access the tagify component via the [service](#service). This name should be unique.|
+| <!-- -->     | <!-- -->                                                                                                                                                                                               |
+|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `settings`   | _Type:_ `TagifySettings`<br>See [tagify/Settings](https://github.com/yairEO/tagify#settings).                                                                                                          |
+| `inputClass` | _Type:_ `string`<br>Apply one or more CSS classes to the input field (e.g. Bootstrap's `form-control`).                                                                                                |
+| `whitelist`  | _Type:_ `Observable<string[]\|TagData[]>`<br>Execution of the observable updates the whitelist of tagify. You can listen to user's inputs and update the whitelist respectively using this observable. |
+| `readonly`   | _Type:_ `boolean`<br>Dynamically change readonly status.                                                                                                                                               |
+| `disabled`   | _Type:_ `boolean`<br>Dynamically change disabled status.                                                                                                                                               |
+| `name`       | _Type:_ `string`<br>Use the name attribute if you want to access the tagify component via the [service](#service). This name should be unique.                                                         |
 
 ### Outputs
 
