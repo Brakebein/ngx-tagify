@@ -27,6 +27,9 @@
               "dist/ngx-tagify/styles/tagify.scss",
               "src/styles.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["node_modules"]
+            },
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
