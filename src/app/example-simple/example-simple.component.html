@@ -10,17 +10,17 @@
   ></tagify>
 </p>
 <p>
-  <button (click)="replaceTags()" class="btn btn-secondary btn-sm mr-2">
+  <button (click)="replaceTags()" class="btn btn-secondary btn-sm me-2">
     Replace tags
   </button>
-  <button (click)="readonly = !readonly" class="btn btn-secondary btn-sm mr-2">
+  <button (click)="readonly = !readonly" class="btn btn-secondary btn-sm me-2">
     Toggle readonly: {{ readonly }}
   </button>
   <button (click)="disabled = !disabled" class="btn btn-secondary btn-sm">
     Toggle disabled: {{ disabled }}
   </button>
 </p>
-<p class="text-monospace">{{ tags | json }}</p>
+<p class="font-monospace small">{{ tags | json }}</p>
 <p>
   <a href="https://github.com/Brakebein/ngx-tagify/tree/master/src/app/example-simple" target="_blank">Code</a>
 </p>

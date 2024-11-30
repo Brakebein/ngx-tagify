@@ -21,7 +21,7 @@
     ],
     "paths": {
       "ngx-tagify": [
-        "dist/ngx-tagify"
+        "projects/ngx-tagify/src/public-api.ts"
       ]
     },
     "useDefineForClassFields": false
