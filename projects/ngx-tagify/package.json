@@ -1,6 +1,6 @@
 {
   "name": "ngx-tagify",
-  "version": "17.0.0",
+  "version": "18.0.0",
   "description": "Angular library that wraps @yaireo/tagify",
   "repository": {
     "type": "git",
