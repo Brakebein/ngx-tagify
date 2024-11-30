@@ -1,10 +1,18 @@
 <h3>Mixed tags</h3>
-<p>with mixed mode (<code>mode: 'mix', pattern: /@|#/</code>), <code>transformTag</code>, and string value for <code>ngModel</code></p>
-<p class="text-monospace small"><i>Original input:</i> {{originalText}}</p>
 <p>
-  <tagify [(ngModel)]="mixedValue"
-          [settings]="mixedSettings">
-  </tagify>
+  with mixed mode (<code>mode: 'mix', pattern: /@|#/</code>), <code>transformTag</code>,
+  and string value for <code>ngModel</code>
+</p>
+<p class="text-monospace small">
+  <i>Original input:</i> {{ originalText }}
+</p>
+<p>
+  <tagify
+    [(ngModel)]="mixedValue"
+    [settings]="mixedSettings"
+  ></tagify>
 </p>
 <p class="text-monospace small"><i>Output:</i> {{ mixedValue }}</p>
-<p><a href="https://github.com/Brakebein/ngx-tagify/tree/master/src/app/example-mixed" target="_blank">Code</a></p>
+<p>
+  <a href="https://github.com/Brakebein/ngx-tagify/tree/master/src/app/example-mixed" target="_blank">Code</a>
+</p>

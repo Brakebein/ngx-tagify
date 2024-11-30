@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import Tagify from '@yaireo/tagify';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TagifyService {
-
   private tagifyMap = new Map<string, Tagify>();
 
   /**
@@ -32,5 +31,4 @@ export class TagifyService {
   remove(name: string): void {
     this.tagifyMap.delete(name);
   }
-
 }

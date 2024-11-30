@@ -4,10 +4,8 @@ import { TagData } from 'ngx-tagify';
 @Component({
   selector: 'app-example-simple',
   templateUrl: './example-simple.component.html',
-  styleUrls: ['./example-simple.component.css']
 })
 export class ExampleSimpleComponent {
-
   tags: TagData[] = [{ value: 'Super' }];
 
   readonly = false;
@@ -15,11 +13,7 @@ export class ExampleSimpleComponent {
   disabled = false;
 
   replaceTags() {
-    this.tags = [
-      {value: 'this'},
-      {value: 'is'},
-      {value: 'awesome'}
-    ];
+    this.tags = [{ value: 'this' }, { value: 'is' }, { value: 'awesome' }];
   }
 
   onAdd(tagify) {
@@ -29,5 +23,4 @@ export class ExampleSimpleComponent {
   onRemove(tags) {
     console.log('removed a tag', tags);
   }
-
 }

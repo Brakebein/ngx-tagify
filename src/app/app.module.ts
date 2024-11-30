@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppComponent } from './app.component';
 import { TagifyModule } from 'ngx-tagify';
+import { AppComponent } from './app.component';
 import { ExampleSimpleComponent } from './example-simple/example-simple.component';
 import { ExampleServiceComponent } from './example-service/example-service.component';
 import { ExampleReactiveFormComponent } from './example-reactive-form/example-reactive-form.component';
@@ -17,15 +17,10 @@ import { ExampleTemplatesComponent } from './example-templates/example-templates
     ExampleServiceComponent,
     ExampleReactiveFormComponent,
     ExampleMixedComponent,
-    ExampleTemplatesComponent
+    ExampleTemplatesComponent,
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TagifyModule
-  ],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, TagifyModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

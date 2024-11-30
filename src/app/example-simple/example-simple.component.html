@@ -1,17 +1,26 @@
 <h3>Simple tagify</h3>
 <p>using <code>[(ngModel)]</code>, dynamic readonly</p>
 <p>
-  <tagify [(ngModel)]="tags"
-          [readonly]="readonly"
-          [disabled]="disabled"
-          (add)="onAdd($event)"
-          (remove)="onRemove($event)">
-  </tagify>
+  <tagify
+    [(ngModel)]="tags"
+    [readonly]="readonly"
+    [disabled]="disabled"
+    (add)="onAdd($event)"
+    (remove)="onRemove($event)"
+  ></tagify>
 </p>
 <p>
-  <button (click)="replaceTags()" class="btn btn-secondary btn-sm mr-2">Replace tags</button>
-  <button (click)="readonly = !readonly" class="btn btn-secondary btn-sm mr-2">Toggle readonly: {{readonly}}</button>
-  <button (click)="disabled = !disabled" class="btn btn-secondary btn-sm">Toggle disabled: {{disabled}}</button>
+  <button (click)="replaceTags()" class="btn btn-secondary btn-sm mr-2">
+    Replace tags
+  </button>
+  <button (click)="readonly = !readonly" class="btn btn-secondary btn-sm mr-2">
+    Toggle readonly: {{ readonly }}
+  </button>
+  <button (click)="disabled = !disabled" class="btn btn-secondary btn-sm">
+    Toggle disabled: {{ disabled }}
+  </button>
 </p>
 <p class="text-monospace">{{ tags | json }}</p>
-<p><a href="https://github.com/Brakebein/ngx-tagify/tree/master/src/app/example-simple" target="_blank">Code</a></p>
+<p>
+  <a href="https://github.com/Brakebein/ngx-tagify/tree/master/src/app/example-simple" target="_blank">Code</a>
+</p>

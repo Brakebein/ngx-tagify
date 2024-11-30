@@ -5,20 +5,16 @@ import { TagifyService, TagifySettings } from 'ngx-tagify';
 @Component({
   selector: 'app-example-service',
   templateUrl: './example-service.component.html',
-  styleUrls: ['./example-service.component.css']
 })
 export class ExampleServiceComponent {
-
   settings: TagifySettings = {
     placeholder: 'Start typing...',
-    blacklist: ['fucking', 'shit']
+    blacklist: ['fucking', 'shit'],
   };
 
   whitelist$ = new BehaviorSubject<string[]>(['Hello', 'World']);
 
-  constructor(
-    private readonly tagifyService: TagifyService
-  ) { }
+  constructor(private readonly tagifyService: TagifyService) {}
 
   onAdd(tagify) {
     console.log('added a tag', tagify);
@@ -35,5 +31,4 @@ export class ExampleServiceComponent {
   addTags() {
     this.tagifyService.get('test').addTags(['this', 'is', 'cool']);
   }
-
 }

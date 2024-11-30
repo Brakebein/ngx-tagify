@@ -7,7 +7,7 @@ import {
   Input,
   OnDestroy,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
@@ -15,34 +15,34 @@ import {
   BehaviorSubject,
   fromEvent,
   Observable,
-  Subject
+  Subject,
 } from 'rxjs';
-import {
-  takeUntil,
-  throttleTime,
-} from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 import Tagify, { TagData, TagifySettings } from '@yaireo/tagify';
 import { TagifyService } from './tagify.service';
 
 @Component({
   selector: 'tagify',
-  template: `<input [ngClass]="inputClassValue" #inputRef/>
+  template: `<input [ngClass]="inputClassValue" #inputRef />
     <span style="display: none"><ng-content></ng-content></span>`,
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => TagifyComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TagifyComponent),
+      multi: true,
+    },
+  ],
 })
-export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnDestroy {
-
-  private valueData: string|TagData[];
+export class TagifyComponent
+  implements AfterViewInit, ControlValueAccessor, OnDestroy
+{
+  private valueData: string | TagData[];
   private valueType = 'undefined';
   private onChange: any = Function.prototype;
   private onTouched: any = Function.prototype;
 
   private unsubscribe$ = new Subject<void>();
-  private value$ = new BehaviorSubject<string|TagData[]>(null);
+  private value$ = new BehaviorSubject<string | TagData[]>(null);
   private tagify: Tagify;
   private skip = false;
 
@@ -50,13 +50,14 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
   private readonlyValue = false;
   private disabledValue = false;
 
-  @ViewChild('inputRef', {static: true}) inputRef: ElementRef<HTMLInputElement>;
+  @ViewChild('inputRef', { static: true })
+  inputRef: ElementRef<HTMLInputElement>;
 
   @Input() settings: TagifySettings = {};
 
   @Input() name = '';
 
-  @Input() whitelist: Observable<string[]|TagData[]>;
+  @Input() whitelist: Observable<string[] | TagData[]>;
 
   @Input() set inputClass(v: string) {
     this.setTagsClass(v);
@@ -73,11 +74,11 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     this.setDisabled();
   }
 
-  get value(): string|TagData[] {
+  get value(): string | TagData[] {
     return this.valueData;
   }
 
-  set value(v: string|TagData[]) {
+  set value(v: string | TagData[]) {
     if (v !== this.valueData) {
       this.valueData = v;
       this.onChange(v);
@@ -90,21 +91,25 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
   constructor(
     private tagifyService: TagifyService,
-    private element: ElementRef<HTMLElement>
-  ) { }
+    private element: ElementRef<HTMLElement>,
+  ) {}
 
   ngAfterViewInit(): void {
     this.settings.callbacks = this.settings.callbacks || {};
 
-    if (!this.settings.callbacks.hasOwnProperty('add')) {
-      this.settings.callbacks.add = () => this.add.emit({
-        tags: this.tagify.value,
-        added: this.tagify.value[this.tagify.value.length - 1]
-      });
+    if (!Object.prototype.hasOwnProperty.call(this.settings.callbacks, 'add')) {
+      this.settings.callbacks.add = () =>
+        this.add.emit({
+          tags: this.tagify.value,
+          added: this.tagify.value[this.tagify.value.length - 1],
+        });
     }
 
-    if (!this.settings.callbacks.hasOwnProperty('remove')) {
-      this.settings.callbacks.remove = () => this.remove.emit(this.tagify.value);
+    if (
+      !Object.prototype.hasOwnProperty.call(this.settings.callbacks, 'remove')
+    ) {
+      this.settings.callbacks.remove = () =>
+        this.remove.emit(this.tagify.value);
     }
 
     const innerText = this.element.nativeElement.textContent;
@@ -129,44 +134,45 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
     }
 
     // listen to value changes from outside
-    this.value$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((tags) => {
+    this.value$.pipe(takeUntil(this.unsubscribe$)).subscribe((tags) => {
+      if (tags === null) return;
 
-        if (tags === null) { return; }
+      if (this.skip) {
+        this.skip = false;
+        return;
+      }
 
-        if (this.skip) {
-          this.skip = false;
-          return;
-        }
+      if (this.valueType === 'undefined') {
+        this.valueType = typeof tags;
+      }
 
-        if (this.valueType === 'undefined') {
-          this.valueType = typeof tags;
-        }
-
-        // if string is passed, e.g. via reactive forms
-        if (typeof tags === 'string') {
-          this.tagify.loadOriginalValues(tags);
-          setTimeout(() => {
-            this.setValue();
-          });
-          return;
-        }
-
-        // add all tags (already existing tags will be skipped
-        this.tagify.addTags(tags, false, true);
-
-        // remove all tags that are not part of value anymore
-        this.tagify.value.forEach((v) => {
-          if (!tags.find((t) => t.value === v.value)) {
-            // somehow removeTags() with string parameter doesn't always find the tag element
-            // this is a workaround for finding the right tag element
-            const tagElm = this.tagify.getTagElms().find((el) => el.attributes.getNamedItem('value').textContent === v.value);
-            this.tagify.removeTags(tagElm);
-          }
+      // if string is passed, e.g. via reactive forms
+      if (typeof tags === 'string') {
+        this.tagify.loadOriginalValues(tags);
+        setTimeout(() => {
+          this.setValue();
         });
+        return;
+      }
 
+      // add all tags (already existing tags will be skipped
+      this.tagify.addTags(tags, false, true);
+
+      // remove all tags that are not part of value anymore
+      this.tagify.value.forEach((v) => {
+        if (!tags.find((t) => t.value === v.value)) {
+          // somehow removeTags() with string parameter doesn't always find the tag element
+          // this is a workaround for finding the right tag element
+          const tagElm = this.tagify
+            .getTagElms()
+            .find(
+              (el) =>
+                el.attributes.getNamedItem('value').textContent === v.value,
+            );
+          this.tagify.removeTags(tagElm);
+        }
       });
+    });
 
     // listen to tagify events
     this.tagify.on('input', (e) => {
@@ -181,7 +187,7 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       .pipe(
         // throttle used to reduce number of value changes when adding/removing a bunch of tags
         throttleTime(0, asyncScheduler, { leading: false, trailing: true }),
-        takeUntil(this.unsubscribe$)
+        takeUntil(this.unsubscribe$),
       )
       .subscribe(() => {
         this.setValue();
@@ -189,15 +195,13 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
 
     // listen to suggestions updates
     if (this.whitelist) {
-      this.whitelist
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((list) => {
-          this.tagify.settings.whitelist = list;
-        });
+      this.whitelist.pipe(takeUntil(this.unsubscribe$)).subscribe((list) => {
+        this.tagify.settings.whitelist = list;
+      });
     }
   }
 
-  writeValue(tags: string|TagData[]) {
+  writeValue(tags: string | TagData[]) {
     this.value$.next(tags);
   }
 
@@ -256,5 +260,4 @@ export class TagifyComponent implements AfterViewInit, ControlValueAccessor, OnD
       this.tagifyService.remove(this.name);
     }
   }
-
 }

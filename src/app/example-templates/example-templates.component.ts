@@ -12,10 +12,9 @@ interface UserTag {
 @Component({
   selector: 'app-example-templates',
   templateUrl: './example-templates.component.html',
-  styleUrls: ['./example-templates.component.css']
+  styleUrls: ['./example-templates.component.css'],
 })
 export class ExampleTemplatesComponent {
-
   settings: TagifySettings<UserTag> = {
     tagTextProp: 'name',
     skipInvalid: true,
@@ -23,7 +22,7 @@ export class ExampleTemplatesComponent {
       closeOnSelect: false,
       enabled: 0,
       classname: 'users-list',
-      searchKeys: ['name', 'email']
+      searchKeys: ['name', 'email'],
     },
     templates: {
       tag(tagData) {
@@ -51,11 +50,14 @@ export class ExampleTemplatesComponent {
             tabindex="0"
             tagifySuggestionIdx="${tagData.value}"
             role="option">
-            ${ tagData.avatar ? `
+            ${
+              tagData.avatar
+                ? `
                 <div class='tagify__dropdown__item__avatar-wrap'>
                     <img src="${tagData.avatar}">
-                </div>` : ''
-        }
+                </div>`
+                : ''
+            }
             <strong>${tagData.name}</strong>
             <span>${tagData.email}</span>
         </div>
@@ -71,7 +73,7 @@ export class ExampleTemplatesComponent {
             <span>${suggestions.length} members</span>
         </header>
         `;
-      }
+      },
     },
     transformTag: (tagData) => {
       const { name, email } = this.parseFullValue(tagData.name);
@@ -85,8 +87,12 @@ export class ExampleTemplatesComponent {
         email = parsed.email;
       }
 
-      if (!name) { return 'Missing name'; }
-      if (!this.validateEmail(email)) { return 'Invalid email'; }
+      if (!name) {
+        return 'Missing name';
+      }
+      if (!this.validateEmail(email)) {
+        return 'Invalid email';
+      }
 
       return true;
     },
@@ -101,14 +107,18 @@ export class ExampleTemplatesComponent {
           (event.detail.event.target as HTMLElement).matches('.remove-all-tags')
         ) {
           tagify.removeAllTags();
-        } else if (event.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`)) {
+        } else if (
+          event.detail.elm.classList.contains(
+            `${tagify.settings.classNames.dropdownItem}__addAll`,
+          )
+        ) {
           tagify.dropdown.selectAll();
         }
       },
       'edit:start': (event) => {
         event.detail.tagify.setTagTextNode(
           event.detail.tag,
-          `${event.detail.data.name} ${event.detail.data.email}`
+          `${event.detail.data.name} ${event.detail.data.email}`,
         );
       },
     },
@@ -118,86 +128,86 @@ export class ExampleTemplatesComponent {
         name: 'Justinian Hattersley',
         avatar: 'https://i.pravatar.cc/80?img=1',
         email: 'jhattersley0@ucsd.edu',
-        team: 'A'
+        team: 'A',
       },
       {
         value: '2',
         name: 'Antons Esson',
         avatar: 'https://i.pravatar.cc/80?img=2',
         email: 'aesson1@ning.com',
-        team: 'B'
+        team: 'B',
       },
       {
         value: '3',
         name: 'Ardeen Batisse',
         avatar: 'https://i.pravatar.cc/80?img=3',
         email: 'abatisse2@nih.gov',
-        team: 'A'
+        team: 'A',
       },
       {
         value: '4',
         name: 'Graeme Yellowley',
         avatar: 'https://i.pravatar.cc/80?img=4',
         email: 'gyellowley3@behance.net',
-        team: 'C'
+        team: 'C',
       },
       {
         value: '5',
         name: 'Dido Wilford',
         avatar: 'https://i.pravatar.cc/80?img=5',
         email: 'dwilford4@jugem.jp',
-        team: 'A'
+        team: 'A',
       },
       {
         value: '6',
         name: 'Celesta Orwin',
         avatar: 'https://i.pravatar.cc/80?img=6',
         email: 'corwin5@meetup.com',
-        team: 'C'
+        team: 'C',
       },
       {
         value: '7',
         name: 'Sally Main',
         avatar: 'https://i.pravatar.cc/80?img=7',
         email: 'smain6@techcrunch.com',
-        team: 'A'
+        team: 'A',
       },
       {
         value: '8',
         name: 'Grethel Haysman',
         avatar: 'https://i.pravatar.cc/80?img=8',
         email: 'ghaysman7@mashable.com',
-        team: 'B'
+        team: 'B',
       },
       {
         value: '9',
         name: 'Marvin Mandrake',
         avatar: 'https://i.pravatar.cc/80?img=9',
         email: 'mmandrake8@sourceforge.net',
-        team: 'B'
+        team: 'B',
       },
       {
         value: '10',
         name: 'Corrie Tidey',
         avatar: 'https://i.pravatar.cc/80?img=10',
         email: 'ctidey9@youtube.com',
-        team: 'A'
+        team: 'A',
       },
       {
         value: '11',
         name: 'foo',
         avatar: 'https://i.pravatar.cc/80?img=11',
         email: 'foo@bar.com',
-        team: 'B'
+        team: 'B',
       },
       {
         value: '12',
         name: 'foo',
         avatar: 'https://i.pravatar.cc/80?img=12',
         email: 'foo.aaa@foo.com',
-        team: 'A'
-      }
-    ]
+        team: 'A',
+      },
+    ],
   };
 
   private validateEmail(email) {
@@ -211,5 +221,4 @@ export class ExampleTemplatesComponent {
 
     return { name, email };
   }
-
 }
