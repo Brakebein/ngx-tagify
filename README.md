@@ -267,15 +267,16 @@ __Option 2:__ If you want to override some of the styling, import it to a sass f
 If you are using Bootstrap as CSS framework (as used in the demo), you might need to tweak some styles in order that Tagify looks pretty:
 
 ```scss
-.tagify
-  --tag-pad: 0 0.5rem;  
+.tagify {
+  --tag-pad: 0 0.5rem;
   line-height: 1.5;
-
-.tagify__input:empty::before
+}
+.tagify__input:empty::before {
   line-height: inherit;
-
-.tagify.form-control
+}
+.tagify.form-control {
   height: unset;
+}
 ```
 
 
@@ -302,4 +303,24 @@ To resolve this issue, set `allowSyntheticDefaultImports` within `compilerOption
     
   }
 }
+```
+
+### I'm getting build error because stylesheet could not be found!
+
+```
+Module build failed (from ./node_modules/@angular-devkit/build-angular/node_modules/sass-loader/dist/cjs.js):
+Can't find stylesheet to import.
+  ╷
+1 │ @import "@yaireo/tagify/src/tagify";
+  │         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ╵
+  node_modules/ngx-tagify/styles/tagify.scss 1:9  root stylesheet
+```
+
+Make sure you include `node_modules` in the `stylePreprocessorOptions` within your `angular.json`:
+
+```json
+"stylePreprocessorOptions": {
+  "includePaths": ["node_modules"]
+},
 ```
