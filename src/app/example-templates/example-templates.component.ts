@@ -105,8 +105,9 @@ export class ExampleTemplatesComponent {
       'dropdown:select': (event) => {
         const tagify = event.detail.tagify;
         if (
-          event.detail.event instanceof MouseEvent &&
-          (event.detail.event.target as HTMLElement).matches('.remove-all-tags')
+          ((event.detail.event as MouseEvent).target as HTMLElement)?.matches(
+            '.remove-all-tags',
+          )
         ) {
           tagify.removeAllTags();
         } else if (

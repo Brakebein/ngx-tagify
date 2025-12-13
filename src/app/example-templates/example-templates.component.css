@@ -6,6 +6,7 @@
   --tag-pad: 0.3rem 0.5rem;
   line-height: normal;
   font: 14px Arial;
+  min-width: 400px;
 }
 
 ::ng-deep .tagify__dropdown.users-list .tagify__dropdown__item{
