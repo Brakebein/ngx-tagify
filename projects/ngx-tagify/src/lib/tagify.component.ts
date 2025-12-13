@@ -9,6 +9,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   asyncScheduler,
@@ -18,11 +19,12 @@ import {
   Subject,
 } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
-import Tagify, { TagData, TagifySettings } from '@yaireo/tagify';
+import Tagify, { BaseTagData, TagData, TagifySettings } from '@yaireo/tagify';
 import { TagifyService } from './tagify.service';
 
 @Component({
   selector: 'tagify',
+  imports: [NgClass],
   template: `<input [ngClass]="inputClassValue" #inputRef />
     <span style="display: none"><ng-content></ng-content></span>`,
   providers: [
@@ -32,18 +34,19 @@ import { TagifyService } from './tagify.service';
       multi: true,
     },
   ],
+  standalone: true,
 })
-export class TagifyComponent
+export class TagifyComponent<T extends BaseTagData = TagData>
   implements AfterViewInit, ControlValueAccessor, OnDestroy
 {
-  private valueData: string | TagData[];
+  private valueData: string | T[];
   private valueType = 'undefined';
   private onChange: any = Function.prototype;
   private onTouched: any = Function.prototype;
 
   private unsubscribe$ = new Subject<void>();
-  private value$ = new BehaviorSubject<string | TagData[]>(null);
-  private tagify: Tagify;
+  private value$ = new BehaviorSubject<string | T[]>(null);
+  private tagify: Tagify<T>;
   private skip = false;
 
   inputClassValue = '';
@@ -53,11 +56,11 @@ export class TagifyComponent
   @ViewChild('inputRef', { static: true })
   inputRef: ElementRef<HTMLInputElement>;
 
-  @Input() settings: TagifySettings = {};
+  @Input() settings: TagifySettings<T> = {};
 
   @Input() name = '';
 
-  @Input() whitelist: Observable<string[] | TagData[]>;
+  @Input() whitelist: Observable<string[] | T[]>;
 
   @Input() set inputClass(v: string) {
     this.setTagsClass(v);
@@ -74,11 +77,11 @@ export class TagifyComponent
     this.setDisabled();
   }
 
-  get value(): string | TagData[] {
+  get value(): string | T[] {
     return this.valueData;
   }
 
-  set value(v: string | TagData[]) {
+  set value(v: string | T[]) {
     if (v !== this.valueData) {
       this.valueData = v;
       this.onChange(v);
@@ -201,7 +204,7 @@ export class TagifyComponent
     }
   }
 
-  writeValue(tags: string | TagData[]) {
+  writeValue(tags: string | T[]) {
     this.value$.next(tags);
   }
 

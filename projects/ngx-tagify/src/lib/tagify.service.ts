@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import Tagify from '@yaireo/tagify';
+import Tagify, { BaseTagData, TagData } from '@yaireo/tagify';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TagifyService {
-  private tagifyMap = new Map<string, Tagify>();
+  private tagifyMap = new Map<string, Tagify<any>>();
 
   /**
    * Adds a tagify instance, so it is available via service. Used internally.
    */
-  add(name: string, tagify: Tagify): void {
+  add(name: string, tagify: Tagify<any>): void {
     if (this.tagifyMap.get(name)) {
       console.warn(`There already exists a tagify instance with name ${name}!`);
       return;
@@ -21,8 +21,8 @@ export class TagifyService {
   /**
    * Get tagify instance for full access to tagify API.
    */
-  get(name: string): Tagify {
-    return this.tagifyMap.get(name);
+  get<T extends BaseTagData = TagData>(name: string): Tagify<T> | undefined {
+    return this.tagifyMap.get(name) as Tagify<T>;
   }
 
   /**

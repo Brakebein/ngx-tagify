@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TagifySettings } from 'ngx-tagify';
+import { TagifyModule, TagifySettings } from 'ngx-tagify';
 
 interface UserTag {
   value: string;
@@ -13,6 +13,8 @@ interface UserTag {
   selector: 'app-example-templates',
   templateUrl: './example-templates.component.html',
   styleUrls: ['./example-templates.component.css'],
+  imports: [TagifyModule],
+  standalone: true,
 })
 export class ExampleTemplatesComponent {
   settings: TagifySettings<UserTag> = {

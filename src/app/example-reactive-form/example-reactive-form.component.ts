@@ -1,10 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { TagifyModule } from 'ngx-tagify';
 import { TagData } from '@yaireo/tagify';
 
 @Component({
   selector: 'app-example-reactive-form',
   templateUrl: './example-reactive-form.component.html',
+  imports: [CommonModule, ReactiveFormsModule, TagifyModule],
+  standalone: true,
 })
 export class ExampleReactiveFormComponent implements OnInit {
   form = new FormGroup({

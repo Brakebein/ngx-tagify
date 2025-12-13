@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { TagifyService, TagifySettings } from 'ngx-tagify';
+import { TagifyModule, TagifyService, TagifySettings } from 'ngx-tagify';
 
 @Component({
   selector: 'app-example-service',
   templateUrl: './example-service.component.html',
+  imports: [TagifyModule],
+  standalone: true,
 })
 export class ExampleServiceComponent {
   settings: TagifySettings = {

@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { TagData } from 'ngx-tagify';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TagData, TagifyModule } from 'ngx-tagify';
 
 @Component({
   selector: 'app-example-simple',
   templateUrl: './example-simple.component.html',
+  imports: [CommonModule, FormsModule, TagifyModule],
+  standalone: true,
 })
 export class ExampleSimpleComponent {
   tags: TagData[] = [{ value: 'Super' }];

@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { TagifySettings } from 'ngx-tagify';
+import { FormsModule } from '@angular/forms';
+import { TagifyModule, TagifySettings } from 'ngx-tagify';
 
 @Component({
   selector: 'app-example-mixed',
   templateUrl: './example-mixed.component.html',
+  imports: [FormsModule, TagifyModule],
+  standalone: true,
 })
 export class ExampleMixedComponent {
   mixedSettings: TagifySettings = {
