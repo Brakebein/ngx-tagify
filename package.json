@@ -54,7 +54,7 @@
     "@types/jasminewd2": "^2.0.10",
     "@types/node": "^20.19.10",
     "@types/yaireo__tagify": "^4.27.0",
-    "angular-eslint": "19.0.0",
+    "angular-eslint": "20.7.0",
     "cpy-cli": "^6.0.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
