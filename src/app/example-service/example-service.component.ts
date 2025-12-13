@@ -6,7 +6,6 @@ import { TagifyModule, TagifyService, TagifySettings } from 'ngx-tagify';
   selector: 'app-example-service',
   templateUrl: './example-service.component.html',
   imports: [TagifyModule],
-  standalone: true,
 })
 export class ExampleServiceComponent {
   settings: TagifySettings = {

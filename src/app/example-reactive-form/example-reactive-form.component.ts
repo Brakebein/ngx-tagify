@@ -13,7 +13,6 @@ import { TagData } from '@yaireo/tagify';
   selector: 'app-example-reactive-form',
   templateUrl: './example-reactive-form.component.html',
   imports: [CommonModule, ReactiveFormsModule, TagifyModule],
-  standalone: true,
 })
 export class ExampleReactiveFormComponent implements OnInit {
   form = new FormGroup({

@@ -14,7 +14,6 @@ interface UserTag {
   templateUrl: './example-templates.component.html',
   styleUrls: ['./example-templates.component.css'],
   imports: [TagifyModule],
-  standalone: true,
 })
 export class ExampleTemplatesComponent {
   settings: TagifySettings<UserTag> = {

@@ -6,7 +6,6 @@ import { TagifyModule, TagifySettings } from 'ngx-tagify';
   selector: 'app-example-mixed',
   templateUrl: './example-mixed.component.html',
   imports: [FormsModule, TagifyModule],
-  standalone: true,
 })
 export class ExampleMixedComponent {
   mixedSettings: TagifySettings = {

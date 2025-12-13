@@ -34,7 +34,6 @@ import { TagifyService } from './tagify.service';
       multi: true,
     },
   ],
-  standalone: true,
 })
 export class TagifyComponent<T extends BaseTagData = TagData>
   implements AfterViewInit, ControlValueAccessor, OnDestroy

@@ -15,6 +15,5 @@ import { ExampleTemplatesComponent } from './example-templates/example-templates
     ExampleServiceComponent,
     ExampleTemplatesComponent,
   ],
-  standalone: true,
 })
 export class AppComponent {}
