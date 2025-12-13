@@ -3,6 +3,12 @@
 .tagify {
   --tag-pad: 0.15rem 0.5rem;
 }
+.tagify__tag > div > * {
+  box-sizing: content-box;
+}
+.tagify__input {
+  min-height: 1.25lh;
+}
 .tagify__input:empty::before {
   line-height: inherit;
 }

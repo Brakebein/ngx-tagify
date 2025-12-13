@@ -256,7 +256,7 @@ __Option 2:__ If you want to override some of the styling, import it to a sass f
 
 ```scss
 // src/styles.scss
-@import "ngx-tagify/styles/tagify";
+@use "ngx-tagify/styles/tagify";
 
 .tagify
   --tags-border-color: #ff0000;
@@ -268,8 +268,10 @@ If you are using Bootstrap as CSS framework (as used in the demo), you might nee
 
 ```scss
 .tagify {
-  --tag-pad: 0 0.5rem;
-  line-height: 1.5;
+  --tag-pad: 0.15rem 0.5rem;
+}
+.tagify__input {
+  min-height: 1.25lh;
 }
 .tagify__input:empty::before {
   line-height: inherit;
