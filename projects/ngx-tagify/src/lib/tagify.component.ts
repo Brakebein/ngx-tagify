@@ -1,13 +1,14 @@
 import {
   AfterViewInit,
   Component,
+  effect,
   ElementRef,
-  EventEmitter,
   forwardRef,
-  Input,
+  inject,
+  input,
   OnDestroy,
-  Output,
-  ViewChild,
+  output,
+  viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -16,16 +17,18 @@ import {
   BehaviorSubject,
   fromEvent,
   Observable,
+  pairwise,
   Subject,
 } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import Tagify, { BaseTagData, TagData, TagifySettings } from '@yaireo/tagify';
 import { TagifyService } from './tagify.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'tagify',
   imports: [NgClass],
-  template: `<input [ngClass]="inputClassValue" #inputRef />
+  template: `<input [ngClass]="inputClass()" #inputRef />
     <span style="display: none"><ng-content></ng-content></span>`,
   providers: [
     {
@@ -48,33 +51,22 @@ export class TagifyComponent<T extends BaseTagData = TagData>
   private tagify: Tagify<T>;
   private skip = false;
 
-  inputClassValue = '';
-  private readonlyValue = false;
-  private disabledValue = false;
+  private tagifyService = inject(TagifyService);
+  private element = inject(ElementRef<HTMLElement>);
 
-  @ViewChild('inputRef', { static: true })
-  inputRef: ElementRef<HTMLInputElement>;
+  inputRef = viewChild<ElementRef<HTMLInputElement>>('inputRef');
 
-  @Input() settings: TagifySettings<T> = {};
+  settings = input<TagifySettings<T>>({});
 
-  @Input() name = '';
+  name = input<string>('');
 
-  @Input() whitelist: Observable<string[] | T[]>;
+  whitelist = input<Observable<string[] | T[]>>();
 
-  @Input() set inputClass(v: string) {
-    this.setTagsClass(v);
-    this.inputClassValue = v;
-  }
+  inputClass = input<string>('');
 
-  @Input() set readonly(v: boolean) {
-    this.readonlyValue = !!v;
-    this.setReadonly();
-  }
+  readonly = input<boolean>(false);
 
-  @Input() set disabled(v: boolean) {
-    this.disabledValue = !!v;
-    this.setDisabled();
-  }
+  disabled = input<boolean>(false);
 
   get value(): string | T[] {
     return this.valueData;
@@ -87,44 +79,57 @@ export class TagifyComponent<T extends BaseTagData = TagData>
     }
   }
 
-  @Output() add = new EventEmitter();
-  @Output() remove = new EventEmitter();
-  @Output() tInput = new EventEmitter<string>();
+  add = output<{ tags: T[]; added: T }>();
+  remove = output<T[]>();
+  tInput = output<string>();
 
-  constructor(
-    private tagifyService: TagifyService,
-    private element: ElementRef<HTMLElement>,
-  ) {}
+  constructor() {
+    effect(() => {
+      const readonly = this.readonly();
+      if (this.tagify) {
+        this.tagify.setReadonly(readonly);
+      }
+    });
+    effect(() => {
+      const disabled = this.disabled();
+      if (this.tagify) {
+        this.tagify.setDisabled(disabled);
+      }
+    });
+    toObservable(this.inputClass)
+      .pipe(pairwise())
+      .subscribe(([oldValue, newValue]) => {
+        this.setTagsClass(oldValue, newValue);
+      });
+  }
 
   ngAfterViewInit(): void {
-    this.settings.callbacks = this.settings.callbacks || {};
+    const settings = this.settings();
+    settings.callbacks = settings.callbacks || {};
 
-    if (!Object.prototype.hasOwnProperty.call(this.settings.callbacks, 'add')) {
-      this.settings.callbacks.add = () =>
+    if (!Object.prototype.hasOwnProperty.call(settings.callbacks, 'add')) {
+      settings.callbacks.add = () =>
         this.add.emit({
           tags: this.tagify.value,
           added: this.tagify.value[this.tagify.value.length - 1],
         });
     }
 
-    if (
-      !Object.prototype.hasOwnProperty.call(this.settings.callbacks, 'remove')
-    ) {
-      this.settings.callbacks.remove = () =>
-        this.remove.emit(this.tagify.value);
+    if (!Object.prototype.hasOwnProperty.call(settings.callbacks, 'remove')) {
+      settings.callbacks.remove = () => this.remove.emit(this.tagify.value);
     }
 
     const innerText = this.element.nativeElement.textContent;
 
-    this.tagify = new Tagify(this.inputRef.nativeElement, this.settings);
+    this.tagify = new Tagify(this.inputRef().nativeElement, settings);
 
     // add to service if name is provided
-    if (this.name.length) {
-      this.tagifyService.add(this.name, this.tagify);
+    if (this.name().length) {
+      this.tagifyService.add(this.name(), this.tagify);
     }
 
-    this.setReadonly();
-    this.setDisabled();
+    this.tagify.setReadonly(this.readonly());
+    this.tagify.setDisabled(this.disabled());
 
     // if there is some text inside component, load this value and skip first change check
     if (innerText.length) {
@@ -196,11 +201,11 @@ export class TagifyComponent<T extends BaseTagData = TagData>
       });
 
     // listen to suggestions updates
-    if (this.whitelist) {
-      this.whitelist.pipe(takeUntil(this.unsubscribe$)).subscribe((list) => {
+    this.whitelist()
+      ?.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((list) => {
         this.tagify.settings.whitelist = list;
       });
-    }
   }
 
   writeValue(tags: string | T[]) {
@@ -232,23 +237,11 @@ export class TagifyComponent<T extends BaseTagData = TagData>
    * Changes of `inputClass` are applied automatically to the `input` element, but have to be
    * manually applied to the `tags` element.
    */
-  private setTagsClass(v: string): void {
+  private setTagsClass(oldClass: string, newClass: string): void {
     const tagsElement = this.element.nativeElement.querySelector('tags');
     if (tagsElement) {
-      tagsElement.classList.remove(...this.inputClassValue.split(/\s+/));
-      tagsElement.classList.add(...v.split(/\s+/));
-    }
-  }
-
-  private setReadonly() {
-    if (this.tagify) {
-      this.tagify.setReadonly(this.readonlyValue);
-    }
-  }
-
-  private setDisabled() {
-    if (this.tagify) {
-      this.tagify.setDisabled(this.disabledValue);
+      tagsElement.classList.remove(...oldClass.split(/\s+/));
+      tagsElement.classList.add(...newClass.split(/\s+/));
     }
   }
 
@@ -258,8 +251,9 @@ export class TagifyComponent<T extends BaseTagData = TagData>
 
     this.tagify.destroy();
 
-    if (this.name.length) {
-      this.tagifyService.remove(this.name);
+    const instanceName = this.name();
+    if (instanceName.length) {
+      this.tagifyService.remove(instanceName);
     }
   }
 }

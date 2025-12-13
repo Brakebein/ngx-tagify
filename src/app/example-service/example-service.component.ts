@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { TagifyModule, TagifyService, TagifySettings } from 'ngx-tagify';
 
@@ -8,14 +8,14 @@ import { TagifyModule, TagifyService, TagifySettings } from 'ngx-tagify';
   imports: [TagifyModule],
 })
 export class ExampleServiceComponent {
+  private readonly tagifyService = inject(TagifyService);
+
   settings: TagifySettings = {
     placeholder: 'Start typing...',
     blacklist: ['fucking', 'shit'],
   };
 
   whitelist$ = new BehaviorSubject<string[]>(['Hello', 'World']);
-
-  constructor(private readonly tagifyService: TagifyService) {}
 
   onAdd(tagify) {
     console.log('added a tag', tagify);
